@@ -46,6 +46,9 @@ class CountdownTextState extends State<CountdownText> {
 
   @override
   Widget build(BuildContext context) {
-    return Text('$_countdown sec');
+    return Text(
+      '$_countdown sec',
+      style: Theme.of(context).textTheme.bodyMedium,
+    );
   }
 }

@@ -1,0 +1,32 @@
+import 'package:color_type_converter/exports.dart';
+import 'package:poc/theme/app_color.dart';
+
+final darkColorScheme = ColorScheme(
+  brightness: Brightness.dark,
+  primary: KpColorSeed.instance.primary.withValues(alpha: 0.8),
+  onPrimary: Colors.black,
+  primaryContainer: KpColorSeed.instance.primary.withValues(alpha: 0.3),
+  onPrimaryContainer: Colors.white,
+  secondary: KpColorSeed.instance.secondary.withValues(alpha: 0.8),
+  onSecondary: Colors.black,
+  secondaryContainer: KpColorSeed.instance.secondary.withValues(alpha: 0.3),
+  onSecondaryContainer: Colors.white,
+  tertiary: KpColorSeed.instance.tertiary,
+  onTertiary: Colors.white,
+  tertiaryContainer: KpColorSeed.instance.tertiary.withValues(alpha: 0.2),
+  onTertiaryContainer: Colors.white,
+  error: KpColorSeed.instance.danger,
+  onError: Colors.black,
+  errorContainer: KpColorSeed.instance.danger.withValues(alpha: 0.3),
+  onErrorContainer: Colors.white,
+  surface: KpColorSeed.instance.surfaceDark,
+  onSurface: Colors.white,
+  surfaceContainerHighest: Colors.grey.shade800,
+  onSurfaceVariant: Colors.white70,
+  outline: Colors.grey.shade400,
+  shadow: Colors.black87,
+  inverseSurface: Colors.white,
+  onInverseSurface: Colors.black,
+  inversePrimary: KpColorSeed.instance.primary.withValues(alpha: 0.5),
+  surfaceTint: KpColorSeed.instance.primary,
+);

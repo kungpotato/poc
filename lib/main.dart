@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poc/managers/dialog_manager.dart';
 import 'package:poc/route.dart';
+import 'package:poc/theme/app_theme.dart' show MyThemes;
 
 import 'l10n/app_localizations.dart';
 import 'providers/locale_provider.dart';
@@ -31,6 +32,9 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       routerConfig: router,
+      themeMode: ThemeMode.light,
+      theme: MyThemes.lightTheme,
+      darkTheme: MyThemes.darkTheme,
       builder: (context, child) {
         return Navigator(
           onGenerateRoute:

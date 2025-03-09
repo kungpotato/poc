@@ -67,32 +67,47 @@ class _DialogManagerState extends ConsumerState<DialogManager> {
                           lastIndex,
                           match.start,
                         ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     );
                   }
 
                   if (match.group(0) == '{{1}}') {
-                    spans.add(
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: CountdownText(
-                          countdownSeconds: request.countdownSeconds ?? 0,
-                          onComplete: () {
-                            Navigator.pop(context);
-                          },
+                    if (request.isCenterCountdown == true) {
+                      spans.add(
+                        WidgetSpan(
+                          child: Center(
+                            child: CountdownText(
+                              countdownSeconds: request.countdownSeconds ?? 0,
+                              onComplete: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      spans.add(
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: CountdownText(
+                            countdownSeconds: request.countdownSeconds ?? 0,
+                            onComplete: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      );
+                    }
                   }
 
                   if (match.group(0) == '{{2}}') {
                     spans.add(
                       TextSpan(
                         text: request.linkLabel,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.copyWith(color: Colors.blue),
                         recognizer:
                             TapGestureRecognizer()
                               ..onTap =
@@ -116,16 +131,14 @@ class _DialogManagerState extends ConsumerState<DialogManager> {
               return AlertDialog(
                 title: Row(
                   children: [
-                    Icon(icon, color: iconColor),
+                    Icon(icon, color: iconColor, size: 30),
                     const SizedBox(width: 8),
                     Text(request.title),
                   ],
                 ),
                 content: RichText(
-                  text: TextSpan(
-                    style: const TextStyle(color: Colors.black, fontSize: 16),
-                    children: buildTextSpans(),
-                  ),
+                  text: TextSpan(children: buildTextSpans()),
+                  textAlign: TextAlign.center,
                 ),
                 actions: [
                   TextButton(

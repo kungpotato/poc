@@ -9,14 +9,15 @@ class AlertRequest {
     this.countdownSeconds,
     this.linkUrl,
     this.linkLabel,
+    this.isCenterCountdown = false,
   });
 
   final String title;
-  final String
-  formattedText; // Uses placeholders {{1}} (countdown) & {{2}} (link)
+  final String formattedText;
   final String buttonTitle;
   final DialogType type;
   final int? countdownSeconds;
   final String? linkUrl;
   final String? linkLabel;
+  final bool isCenterCountdown;
 }

@@ -46,10 +46,11 @@ class HomeScreen extends ConsumerWidget {
                   AlertRequest(
                     title: 'Session Expiring!',
                     formattedText:
-                        'Your session will expire in {{1}}. Click {{2}} for help.',
+                        'Your session will expire in {{1}} Click {{2}} for help.',
                     buttonTitle: 'Extend',
                     type: DialogType.error,
                     countdownSeconds: 10,
+                    isCenterCountdown: true,
                     linkLabel: 'here',
                     linkUrl: 'https://example.com',
                   ),
