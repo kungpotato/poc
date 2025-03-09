@@ -30,11 +30,32 @@ class _DialogManagerState extends ConsumerState<DialogManager> {
   }
 
   void _showDialog(AlertRequest request) {
+    IconData icon;
+    Color iconColor;
+
+    switch (request.type) {
+      case DialogType.error:
+        icon = Icons.error;
+        iconColor = Colors.red;
+      case DialogType.warning:
+        icon = Icons.warning;
+        iconColor = Colors.orange;
+      case DialogType.success:
+        icon = Icons.check_circle;
+        iconColor = Colors.green;
+    }
+
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: Text(request.title),
+            title: Row(
+              children: [
+                Icon(icon, color: iconColor),
+                const SizedBox(width: 8),
+                Text(request.title),
+              ],
+            ),
             content: Text(request.description),
             actions: [
               TextButton(

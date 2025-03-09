@@ -12,6 +12,7 @@ class DialogService {
   }
 
   Future<AlertResponse> showDialog({
+    required DialogType type,
     required String title,
     required String description,
     String buttonTitle = 'OK',
@@ -19,6 +20,7 @@ class DialogService {
     _dialogCompleter = Completer<AlertResponse>();
     _showDialogListener(
       AlertRequest(
+        type: type,
         title: title,
         description: description,
         buttonTitle: buttonTitle,
@@ -27,7 +29,7 @@ class DialogService {
     return _dialogCompleter!.future as Future<AlertResponse>;
   }
 
-  void dialogComplete([AlertResponse? response]) {
+  void dialogComplete(AlertResponse response) {
     _dialogCompleter?.complete(response);
     _dialogCompleter = null;
   }

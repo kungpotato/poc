@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poc/dialog/alert_request.dart';
 import 'package:poc/providers/dialog_provider.dart';
 
 import '../l10n/app_localizations.dart';
@@ -42,6 +43,7 @@ class HomeScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () async {
                 final result = await dialogService.showDialog(
+                  type: DialogType.warning,
                   title: 'Enter Your Name',
                   description: 'Please confirm your name',
                   buttonTitle: 'Confirm',
