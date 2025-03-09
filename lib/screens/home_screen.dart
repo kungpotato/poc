@@ -50,7 +50,7 @@ class HomeScreen extends ConsumerWidget {
                     buttonTitle: 'Extend',
                     type: DialogType.error,
                     countdownSeconds: 10,
-                    isCenterCountdown: true,
+                    // isCenterCountdown: true,
                     linkLabel: 'here',
                     linkUrl: 'https://example.com',
                   ),
