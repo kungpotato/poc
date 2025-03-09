@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poc/managers/dialog_manager.dart';
 import 'package:poc/route.dart';
 
 import 'l10n/app_localizations.dart';
@@ -30,6 +31,16 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       routerConfig: router,
+      builder: (context, child) {
+        return Navigator(
+          onGenerateRoute:
+              (_) => MaterialPageRoute(
+                builder:
+                    (context) =>
+                        DialogManager(child: child ?? const SizedBox.shrink()),
+              ),
+        );
+      },
     );
   }
 }
