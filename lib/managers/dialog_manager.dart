@@ -1,9 +1,12 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poc/dialog/alert_request.dart';
 import 'package:poc/dialog/alert_response.dart';
 import 'package:poc/dialog/dialog_service.dart';
 import 'package:poc/providers/dialog_provider.dart';
+import 'package:poc/widgets/countdown_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DialogManager extends ConsumerStatefulWidget {
   const DialogManager({required this.child, super.key});
@@ -48,33 +51,104 @@ class _DialogManagerState extends ConsumerState<DialogManager> {
     showDialog(
       context: context,
       builder:
-          (context) => AlertDialog(
-            title: Row(
-              children: [
-                Icon(icon, color: iconColor),
-                const SizedBox(width: 8),
-                Text(request.title),
-              ],
-            ),
-            content: Text(request.description),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  _dialogService.dialogComplete(
-                    AlertResponse(confirmed: false),
+          (context) => StatefulBuilder(
+            builder: (context, setState) {
+              List<InlineSpan> buildTextSpans() {
+                final List<InlineSpan> spans = [];
+                final RegExp regex = RegExp(r'(\{\{1\}\}|\{\{2\}\})');
+                final matches = regex.allMatches(request.formattedText);
+                int lastIndex = 0;
+
+                for (final match in matches) {
+                  if (match.start > lastIndex) {
+                    spans.add(
+                      TextSpan(
+                        text: request.formattedText.substring(
+                          lastIndex,
+                          match.start,
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (match.group(0) == '{{1}}') {
+                    spans.add(
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: CountdownText(
+                          countdownSeconds: request.countdownSeconds ?? 0,
+                          onComplete: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (match.group(0) == '{{2}}') {
+                    spans.add(
+                      TextSpan(
+                        text: request.linkLabel,
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer:
+                            TapGestureRecognizer()
+                              ..onTap =
+                                  () => launchUrl(Uri.parse(request.linkUrl!)),
+                      ),
+                    );
+                  }
+
+                  lastIndex = match.end;
+                }
+
+                if (lastIndex < request.formattedText.length) {
+                  spans.add(
+                    TextSpan(text: request.formattedText.substring(lastIndex)),
                   );
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  _dialogService.dialogComplete(AlertResponse(confirmed: true));
-                  Navigator.pop(context);
-                },
-                child: Text(request.buttonTitle),
-              ),
-            ],
+                }
+
+                return spans;
+              }
+
+              return AlertDialog(
+                title: Row(
+                  children: [
+                    Icon(icon, color: iconColor),
+                    const SizedBox(width: 8),
+                    Text(request.title),
+                  ],
+                ),
+                content: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(color: Colors.black, fontSize: 16),
+                    children: buildTextSpans(),
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      _dialogService.dialogComplete(
+                        AlertResponse(confirmed: false),
+                      );
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _dialogService.dialogComplete(
+                        AlertResponse(confirmed: true),
+                      );
+                      Navigator.pop(context);
+                    },
+                    child: Text(request.buttonTitle),
+                  ),
+                ],
+              );
+            },
           ),
     );
   }

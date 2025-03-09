@@ -43,10 +43,16 @@ class HomeScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () async {
                 final result = await dialogService.showDialog(
-                  type: DialogType.warning,
-                  title: 'Enter Your Name',
-                  description: 'Please confirm your name',
-                  buttonTitle: 'Confirm',
+                  AlertRequest(
+                    title: 'Session Expiring!',
+                    formattedText:
+                        'Your session will expire in {{1}}. Click {{2}} for help.',
+                    buttonTitle: 'Extend',
+                    type: DialogType.error,
+                    countdownSeconds: 10,
+                    linkLabel: 'here',
+                    linkUrl: 'https://example.com',
+                  ),
                 );
 
                 if (result.confirmed) {

@@ -11,21 +11,9 @@ class DialogService {
     _showDialogListener = showDialogListener;
   }
 
-  Future<AlertResponse> showDialog({
-    required DialogType type,
-    required String title,
-    required String description,
-    String buttonTitle = 'OK',
-  }) {
+  Future<AlertResponse> showDialog(AlertRequest req) {
     _dialogCompleter = Completer<AlertResponse>();
-    _showDialogListener(
-      AlertRequest(
-        type: type,
-        title: title,
-        description: description,
-        buttonTitle: buttonTitle,
-      ),
-    );
+    _showDialogListener(req);
     return _dialogCompleter!.future as Future<AlertResponse>;
   }
 
