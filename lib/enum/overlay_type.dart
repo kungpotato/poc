@@ -1,1 +1,1 @@
-enum OverlayTypeType { error, warning, success }
+enum OverlayTypeType { danger, warning, success }

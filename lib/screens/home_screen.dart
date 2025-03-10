@@ -47,11 +47,10 @@ class HomeScreen extends ConsumerWidget {
                 final result = await overlayService.showDialog(
                   AlertRequest(
                     title: 'Session Expiring!',
-                    // formattedText:
-                    //     'Your session will expire in {{1}} Click {{2}} for help.',
-                    formattedText: 'xxx yyy',
+                    formattedText:
+                        'Your session will expire in {{1}} Click {{2}} for help.',
                     buttonTitle: 'Extend',
-                    type: OverlayTypeType.error,
+                    type: OverlayTypeType.danger,
                     countdownSeconds: 10,
                     // isCenterCountdown: true,
                     linkLabel: 'here',

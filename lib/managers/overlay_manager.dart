@@ -133,7 +133,7 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
     Color iconColor;
 
     switch (request.type) {
-      case OverlayTypeType.error:
+      case OverlayTypeType.danger:
         icon = Icons.error;
         iconColor = Colors.red;
       case OverlayTypeType.warning:
