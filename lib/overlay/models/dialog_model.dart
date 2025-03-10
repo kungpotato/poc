@@ -1,4 +1,4 @@
-enum DialogType { error, warning, success }
+import 'package:poc/enum/overlay_type.dart';
 
 class AlertRequest {
   AlertRequest({
@@ -15,9 +15,15 @@ class AlertRequest {
   final String title;
   final String formattedText;
   final String buttonTitle;
-  final DialogType type;
+  final OverlayTypeType type;
   final int? countdownSeconds;
   final String? linkUrl;
   final String? linkLabel;
   final bool isCenterCountdown;
+}
+
+class AlertResponse {
+  AlertResponse({required this.confirmed});
+
+  final bool confirmed;
 }

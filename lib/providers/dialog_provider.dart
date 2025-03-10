@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poc/dialog/dialog_service.dart';
+import 'package:poc/overlay/overlay_service.dart';
 
-final dialogServiceProvider = Provider<DialogService>((ref) {
-  return DialogService();
+final overlayProvider = Provider<OverlayService>((ref) {
+  return OverlayService();
 });

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poc/managers/dialog_manager.dart';
+import 'package:poc/managers/overlay_manager.dart';
 import 'package:poc/route.dart';
 import 'package:poc/theme/app_theme.dart' show MyThemes;
 
@@ -41,7 +41,7 @@ class MyApp extends ConsumerWidget {
               (_) => MaterialPageRoute(
                 builder:
                     (context) =>
-                        DialogManager(child: child ?? const SizedBox.shrink()),
+                        OverlayManager(child: child ?? const SizedBox.shrink()),
               ),
         );
       },

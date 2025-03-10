@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:poc/dialog/alert_request.dart';
+import 'package:poc/enum/overlay_type.dart';
+import 'package:poc/overlay/models/dialog_model.dart';
+import 'package:poc/overlay/models/snackbar_model.dart';
 import 'package:poc/providers/dialog_provider.dart';
 
 import '../l10n/app_localizations.dart';
@@ -14,7 +16,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(localeProvider);
     final appLocalizations = AppLocalizations.of(context);
-    final dialogService = ref.read(dialogServiceProvider);
+    final overlayService = ref.read(overlayProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(appLocalizations.hello)),
@@ -42,13 +44,14 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                final result = await dialogService.showDialog(
+                final result = await overlayService.showDialog(
                   AlertRequest(
                     title: 'Session Expiring!',
-                    formattedText:
-                        'Your session will expire in {{1}} Click {{2}} for help.',
+                    // formattedText:
+                    //     'Your session will expire in {{1}} Click {{2}} for help.',
+                    formattedText: 'xxx yyy',
                     buttonTitle: 'Extend',
-                    type: DialogType.error,
+                    type: OverlayTypeType.error,
                     countdownSeconds: 10,
                     // isCenterCountdown: true,
                     linkLabel: 'here',
@@ -59,10 +62,21 @@ class HomeScreen extends ConsumerWidget {
                 if (result.confirmed) {
                   print('User entered: $result');
                 } else {
-                  print('User canceled the dialog.');
+                  print('User canceled the models.');
                 }
               },
               child: const Text('Show Dialog'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                overlayService.showSnackBar(
+                  SnackBarRequest(
+                    message: 'xxx',
+                    type: OverlayTypeType.success,
+                  ),
+                );
+              },
+              child: const Text('Show snack'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
