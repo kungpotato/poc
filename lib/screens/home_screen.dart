@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poc/enum/overlay_type.dart';
+import 'package:poc/l10n/app_localizations.dart';
 import 'package:poc/overlay/models/dialog_model.dart';
 import 'package:poc/overlay/models/snackbar_model.dart';
 import 'package:poc/providers/dialog_provider.dart';
-
-import '../l10n/app_localizations.dart';
-import '../providers/locale_provider.dart';
+import 'package:poc/providers/locale_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
