@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poc/enum/overlay_type.dart';
 import 'package:poc/l10n/app_localizations.dart';
+import 'package:poc/overlay/models/bottomsheet_model.dart';
 import 'package:poc/overlay/models/dialog_model.dart';
 import 'package:poc/overlay/models/snackbar_model.dart';
 import 'package:poc/providers/dialog_provider.dart';
@@ -64,6 +65,39 @@ class HomeScreen extends ConsumerWidget {
                 }
               },
               child: const Text('Show Dialog'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final res = await overlayService.showBottomSheet(
+                  BottomSheetRequest(
+                    child: SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            const Text('BottomSheet'),
+                            ElevatedButton(
+                              child: const Text('Snack'),
+                              onPressed: () {
+                                overlayService.showSnackBar(
+                                  SnackBarRequest(
+                                    message: 'xxx',
+                                    type: OverlayTypeType.success,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+                print(res);
+              },
+              child: const Text('Show bottom sheet'),
             ),
             ElevatedButton(
               onPressed: () {

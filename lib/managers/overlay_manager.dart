@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poc/enum/overlay_type.dart';
+import 'package:poc/overlay/models/bottomsheet_model.dart';
 import 'package:poc/overlay/models/dialog_model.dart';
 import 'package:poc/overlay/models/snackbar_model.dart';
 import 'package:poc/overlay/overlay_service.dart';
@@ -19,19 +20,31 @@ class OverlayManager extends ConsumerStatefulWidget {
 }
 
 class _DialogManagerState extends ConsumerState<OverlayManager> {
-  late OverlayService _dialogService;
+  late OverlayService _overlayService;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  PersistentBottomSheetController? _bottomSheetController;
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>?
+  _snackBarController;
 
   @override
   void initState() {
     super.initState();
-    _dialogService = ref.read(overlayProvider);
-    _dialogService.registerDialogListener(_showDialog);
-    _dialogService.registerSnackBarListener(_showSnackBar);
+    _overlayService = ref.read(overlayProvider);
+    _overlayService.registerDialogListener(_showDialog);
+    _overlayService.registerBottomSheetListener(_showBottomSheet);
+    _overlayService.registerSnackBarListener(_showSnackBar);
+  }
+
+  @override
+  void dispose() {
+    _bottomSheetController?.close();
+    _snackBarController?.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return Scaffold(key: _scaffoldKey, body: widget.child);
   }
 
   List<InlineSpan> buildTextSpans({
@@ -118,17 +131,42 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
     return spans;
   }
 
+  void _showBottomSheet(BottomSheetRequest request) {
+    _bottomSheetController = _scaffoldKey.currentState?.showBottomSheet(
+      (context) => ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 700),
+        child: Stack(
+          children: [
+            request.child,
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                onPressed: () {
+                  _overlayService.dialogComplete(
+                    AlertResponse(confirmed: false),
+                  );
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.close, size: 30, color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _showSnackBar(SnackBarRequest request) {
-    ScaffoldMessenger.of(context).showSnackBar(
+    _snackBarController = ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        key: const Key('value'),
+        key: const Key('overlaySnack'),
         content: Text(request.message),
         duration: Duration(seconds: request.durationSeconds),
       ),
     );
   }
 
-  void _showDialog(AlertRequest request) {
+  Future<bool?> _showDialog<T>(AlertRequest request) async {
     IconData icon;
     Color iconColor;
 
@@ -144,7 +182,7 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
         iconColor = Colors.green;
     }
 
-    showDialog(
+    final res = await showDialog<bool?>(
       context: context,
       builder:
           (context) => StatefulBuilder(
@@ -172,19 +210,13 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      _dialogService.dialogComplete(
-                        AlertResponse(confirmed: false),
-                      );
-                      Navigator.pop(context);
+                      Navigator.pop(context, false);
                     },
                     child: const Text('Cancel'),
                   ),
                   TextButton(
                     onPressed: () {
-                      _dialogService.dialogComplete(
-                        AlertResponse(confirmed: true),
-                      );
-                      Navigator.pop(context);
+                      Navigator.pop(context, true);
                     },
                     child: Text(request.buttonTitle),
                   ),
@@ -193,5 +225,7 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
             },
           ),
     );
+    _overlayService.dialogComplete(AlertResponse(confirmed: res ?? false));
+    return res;
   }
 }
