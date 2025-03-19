@@ -13,10 +13,10 @@ class SecondScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text('Todo List')),
       body: todosAsync.when(
         data:
-            (todos) => ListView.builder(
-              itemCount: todos.length,
+            (data) => ListView.builder(
+              itemCount: data.todos.length,
               itemBuilder: (context, index) {
-                final todo = todos[index];
+                final todo = data.todos[index];
                 return ListTile(
                   title: Text(todo.title),
                   trailing: IconButton(
