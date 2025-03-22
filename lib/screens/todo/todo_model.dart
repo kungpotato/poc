@@ -7,7 +7,7 @@ part 'todo_model.g.dart';
 abstract class TodoModel with _$TodoModel {
   @Assert('title.isNotEmpty', 'title cannot be empty')
   factory TodoModel({
-    required String id,
+    required int id,
     required String title,
     @Default(false) bool completed,
   }) = _TodoModel;

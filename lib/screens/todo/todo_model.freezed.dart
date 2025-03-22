@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TodoModel {
 
- String get id; String get title; bool get completed;
+ int get id; String get title; bool get completed;
 /// Create a copy of TodoModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $TodoModelCopyWith<$Res>  {
   factory $TodoModelCopyWith(TodoModel value, $Res Function(TodoModel) _then) = _$TodoModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, bool completed
+ int id, String title, bool completed
 });
 
 
@@ -69,7 +69,7 @@ class _$TodoModelCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? completed = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,completed: null == completed ? _self.completed : completed // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
@@ -85,7 +85,7 @@ class _TodoModel extends TodoModel {
    _TodoModel({required this.id, required this.title, this.completed = false}): assert(title.isNotEmpty, 'title cannot be empty'),super._();
   factory _TodoModel.fromJson(Map<String, dynamic> json) => _$TodoModelFromJson(json);
 
-@override final  String id;
+@override final  int id;
 @override final  String title;
 @override@JsonKey() final  bool completed;
 
@@ -122,7 +122,7 @@ abstract mixin class _$TodoModelCopyWith<$Res> implements $TodoModelCopyWith<$Re
   factory _$TodoModelCopyWith(_TodoModel value, $Res Function(_TodoModel) _then) = __$TodoModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, bool completed
+ int id, String title, bool completed
 });
 
 
@@ -142,7 +142,7 @@ class __$TodoModelCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? completed = null,}) {
   return _then(_TodoModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,completed: null == completed ? _self.completed : completed // ignore: cast_nullable_to_non_nullable
 as bool,
   ));

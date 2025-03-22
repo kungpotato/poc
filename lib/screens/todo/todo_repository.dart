@@ -1,44 +1,29 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poc/dio/dio.dart';
 import 'package:poc/screens/todo/todo_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'todo_repository.g.dart';
 
 @riverpod
 TodoRepository todoRepository(Ref ref) {
-  final repo = TodoRepository();
-  ref.onDispose(repo.dispose);
-  return repo;
+  return TodoRepository(ref.read(dioProvider));
 }
 
 class TodoRepository {
-  final _todoController = BehaviorSubject<List<TodoModel>>.seeded([]);
+  TodoRepository(this._dio);
 
-  Stream<List<TodoModel>> get todosStream => _todoController.stream;
+  final Dio _dio;
 
-  void addTodo(TodoModel todo) {
-    final currentTodos = _todoController.value;
-    _todoController.add([...currentTodos, todo]);
-  }
+  Future<List<TodoModel>> fetchTodos() async {
+    final response = await _dio.get('/todos');
+    final data = response.data as List;
 
-  void updateTodo(TodoModel updatedTodo) {
-    final currentTodos =
-        _todoController.value.map((todo) {
-          return todo.id == updatedTodo.id ? updatedTodo : todo;
-        }).toList();
-    _todoController.add(currentTodos);
-  }
-
-  void deleteTodo(String id) {
-    final currentTodos =
-        _todoController.value.where((todo) => todo.id != id).toList();
-    _todoController.add(currentTodos);
-  }
-
-  void dispose() {
-    _todoController.close();
+    return data
+        .map((e) => TodoModel.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 }

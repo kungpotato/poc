@@ -17,33 +17,11 @@ class SecondScreen extends ConsumerWidget {
               itemCount: data.todos.length,
               itemBuilder: (context, index) {
                 final todo = data.todos[index];
-                return ListTile(
-                  title: Text(todo.title),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed:
-                        () => ref
-                            .read(todoNotifierProvider.notifier)
-                            .deleteTodo(todo.id),
-                  ),
-                  leading: Checkbox(
-                    value: todo.completed,
-                    onChanged: (value) {
-                      ref
-                          .read(todoNotifierProvider.notifier)
-                          .updateTodo(todo.copyWith(completed: value ?? false));
-                    },
-                  ),
-                );
+                return ListTile(title: Text(todo.title));
               },
             ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed:
-            () => ref.read(todoNotifierProvider.notifier).addTodo('New Task'),
-        child: const Icon(Icons.add),
       ),
     );
   }
