@@ -1,6 +1,6 @@
 import 'package:poc/screens/todo/todo_model.dart';
+import 'package:poc/screens/todo/todo_repository.dart';
 import 'package:poc/screens/todo/todo_state.dart';
-import 'package:poc/screens/todo/toto_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 

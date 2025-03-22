@@ -2,9 +2,17 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poc/screens/todo/todo_model.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
-final todoRepositoryProvider = Provider((ref) => TodoRepository());
+part 'todo_repository.g.dart';
+
+@riverpod
+TodoRepository todoRepository(Ref ref) {
+  final repo = TodoRepository();
+  ref.onDispose(repo.dispose);
+  return repo;
+}
 
 class TodoRepository {
   final _todoController = BehaviorSubject<List<TodoModel>>.seeded([]);
