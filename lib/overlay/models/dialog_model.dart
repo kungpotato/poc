@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:poc/enum/overlay_type.dart';
 
 class AlertRequest {
@@ -10,6 +11,7 @@ class AlertRequest {
     this.linkUrl,
     this.linkLabel,
     this.isCenterCountdown = false,
+    this.child,
   });
 
   final String title;
@@ -20,6 +22,7 @@ class AlertRequest {
   final String? linkUrl;
   final String? linkLabel;
   final bool isCenterCountdown;
+  final Widget? child;
 }
 
 class AlertResponse {

@@ -195,18 +195,20 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
                     Text(request.title),
                   ],
                 ),
-                content: RichText(
-                  text: TextSpan(
-                    children: buildTextSpans(
-                      linkLabel: request.linkLabel ?? '',
-                      formattedText: request.formattedText,
-                      isCenterCountdown: request.isCenterCountdown,
-                      countdownSeconds: request.countdownSeconds,
-                      linkUrl: request.linkUrl,
+                content:
+                    request.child ??
+                    RichText(
+                      text: TextSpan(
+                        children: buildTextSpans(
+                          linkLabel: request.linkLabel ?? '',
+                          formattedText: request.formattedText,
+                          isCenterCountdown: request.isCenterCountdown,
+                          countdownSeconds: request.countdownSeconds,
+                          linkUrl: request.linkUrl,
+                        ),
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
                 actions: [
                   TextButton(
                     onPressed: () {
