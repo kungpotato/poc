@@ -1,3 +1,4 @@
+import 'package:poc/providers/ws_provider.dart';
 import 'package:poc/screens/todo/todo_repository.dart';
 import 'package:poc/screens/todo/todo_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,7 +14,14 @@ class TodoNotifier extends _$TodoNotifier {
   Stream<TodoState> build() {
     ref.onDispose(_todoController.close);
     getTodo();
-    return _todoController.stream;
+
+    return CombineLatestStream.combine2(
+      _todoController.stream,
+      ref.watch(wsEventProvider('trade').select((value) => value)),
+      (a, b) {
+        return a;
+      },
+    );
   }
 
   Future<void> getTodo() async {
