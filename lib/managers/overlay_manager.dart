@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,8 +26,6 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
   late OverlayService _overlayService;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   PersistentBottomSheetController? _bottomSheetController;
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>?
-  _snackBarController;
 
   @override
   void initState() {
@@ -38,7 +39,6 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
   @override
   void dispose() {
     _bottomSheetController?.close();
-    _snackBarController?.close();
     super.dispose();
   }
 
@@ -157,13 +157,18 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
   }
 
   void _showSnackBar(SnackBarRequest request) {
-    _snackBarController = ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        key: const Key('overlaySnack'),
-        content: Text(request.message),
-        duration: Duration(seconds: request.durationSeconds),
-      ),
+    final flushBar = Flushbar(
+      title: request.title,
+      titleText: request.titleWidget,
+      message: request.message,
+      messageText:
+          request.messageWidget ??
+          (request.message != null ? Text(request.message!) : null),
+      duration: Duration(seconds: request.durationSeconds),
+      animationDuration: const Duration(milliseconds: 300),
     );
+
+    flushBar.show(context);
   }
 
   Future<bool?> _showDialog<T>(AlertRequest request) async {

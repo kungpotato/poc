@@ -83,7 +83,7 @@ class HomeScreen extends ConsumerWidget {
                               onPressed: () {
                                 overlayService.showSnackBar(
                                   SnackBarRequest(
-                                    message: 'xxx',
+                                    title: 'xxx',
                                     type: OverlayTypeType.success,
                                   ),
                                 );
@@ -102,10 +102,7 @@ class HomeScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () {
                 overlayService.showSnackBar(
-                  SnackBarRequest(
-                    message: 'xxx',
-                    type: OverlayTypeType.success,
-                  ),
+                  SnackBarRequest(title: 'xxx', type: OverlayTypeType.success),
                 );
               },
               child: const Text('Show snack'),

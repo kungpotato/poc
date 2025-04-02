@@ -17,6 +17,14 @@ def camel_case(s):
     return words[0].lower() + ''.join(word.capitalize() for word in words[1:] if word)
 
 
+def snake_case(s):
+    # Add underscore between camelCase or PascalCase words
+    s = re.sub(r'(?<=[a-z0-9])([A-Z])', r'_\1', s)
+    # Replace non-alphanumeric characters with underscores
+    s = re.sub(r'[^a-zA-Z0-9]+', '_', s)
+    return s.lower()
+
+
 def infer_type(val):
     if isinstance(val, str) and re.match(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$', val):
         return 'Color'
@@ -128,7 +136,7 @@ def parse_tokens(data, output_dir='../lib/theme/generated_tokens'):
     for group_name, group_values in data.items():
         for class_name, class_props in group_values.items():
             dart_code = generate_dart_class(class_name, class_props, token_map)
-            file_path = os.path.join(output_dir, f'kp_{camel_case(class_name)}.dart')
+            file_path = os.path.join(output_dir, f'kp_{snake_case(class_name)}.dart')
             with open(file_path, 'w') as f:
                 f.write(dart_code)
             print(f"Generated: {file_path}")
