@@ -12,6 +12,7 @@ class AlertRequest {
     this.linkLabel,
     this.isCenterCountdown = false,
     this.child,
+    this.textAlign,
   });
 
   final String title;
@@ -23,6 +24,7 @@ class AlertRequest {
   final String? linkLabel;
   final bool isCenterCountdown;
   final Widget? child;
+  final TextAlign? textAlign;
 }
 
 class AlertResponse {

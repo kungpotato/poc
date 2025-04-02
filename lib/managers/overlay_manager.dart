@@ -212,7 +212,7 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
                           linkUrl: request.linkUrl,
                         ),
                       ),
-                      textAlign: TextAlign.center,
+                      textAlign: request.textAlign ?? TextAlign.start,
                     ),
                 actions: [
                   TextButton(
