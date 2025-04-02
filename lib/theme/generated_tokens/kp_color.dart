@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class KpColor {
-  static const Color primaryLight = Color(0xFF6200EE);
-  static const Color primaryDark = Color(0xFFBB86FC);
+  static const Color primaryLight = Color(0xFFDA0071);
+  static const Color primaryDark = Color(0xFFE91E63);
   static const Color onPrimaryLight = Color(0xFFFFFFFF);
   static const Color onPrimaryDark = Color(0xFF000000);
   static const Color secondaryLight = Color(0xFF03DAC6);

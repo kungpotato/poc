@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class KpButton {
-  static const Color primaryBackgroundColor = Color(0xFF6200EE);
+  static const Color primaryBackgroundColor = Color(0xFFDA0071);
   static const Color primaryTextColor = Color(0xFFFFFFFF);
   static const int primaryBorderRadius = 8;
   static const int primaryPaddingHorizontal = 16;
