@@ -4,52 +4,58 @@ import re
 
 
 def pascal_case(s):
-    # Split on non-alphanumeric + also insert space before capital letters (camelCase)
+    # Insert space before capital letters (e.g., camelCase -> camel Case)
     s = re.sub(r'(?<=[a-z])([A-Z])', r' \1', s)
     words = re.split(r'[^a-zA-Z0-9]+', s)
     return ''.join(word.capitalize() for word in words if word)
 
 
 def camel_case(s):
-    # Insert space before capital letters to split camelCase too
     s = re.sub(r'(?<=[a-z])([A-Z])', r' \1', s)
     words = re.split(r'[^a-zA-Z0-9]+', s)
     return words[0].lower() + ''.join(word.capitalize() for word in words[1:] if word)
 
 
 def snake_case(s):
-    # Add underscore between camelCase or PascalCase words
     s = re.sub(r'(?<=[a-z0-9])([A-Z])', r'_\1', s)
-    # Replace non-alphanumeric characters with underscores
     s = re.sub(r'[^a-zA-Z0-9]+', '_', s)
     return s.lower()
 
 
 def infer_type(val):
-    if isinstance(val, str) and re.match(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$', val):
-        return 'Color'
-    try:
-        float_val = float(val)
-        return 'int' if float_val.is_integer() else 'double'
-    except:
-        return 'String'
+    if isinstance(val, str):
+        # If it's a color
+        if re.match(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$', val):
+            return 'Color'
+        # If it's a number (int or double)
+        try:
+            float(val)
+            return 'double'
+        except:
+            return 'String'
+
+    if isinstance(val, int):
+        return 'int'
+    if isinstance(val, float):
+        return 'double'
+
+    return 'String'
 
 
 def format_value(val):
     if isinstance(val, str):
         if re.match(r'^#([A-Fa-f0-9]{6})$', val):
-            # Convert #RRGGBB to Color(0xFFRRGGBB)
             return f'Color(0xFF{val[1:].upper()})'
         elif re.match(r'^#([A-Fa-f0-9]{8})$', val):
-            # Convert #AARRGGBB directly
             return f'Color(0x{val[1:].upper()})'
         try:
-            float_val = float(val)
-            return str(int(float_val)) if float_val.is_integer() else str(float_val)
+            if '.' in val:
+                return str(float(val))
+            return str(int(val))
         except:
             return f"'{val}'"
 
-    if isinstance(val, (int, float)):
+    if isinstance(val, int) or isinstance(val, float):
         return str(val)
 
     return f"'{val}'"
@@ -73,7 +79,6 @@ def flatten_tokens(data, prefix='', flat_map=None):
         full_key = f"{prefix}.{k}" if prefix else k
         if isinstance(v, dict):
             if 'value' in v:
-                # Store both with and without `.value`
                 flat_map[full_key] = v['value']
                 flat_map[full_key + '.value'] = v['value']
             else:

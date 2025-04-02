@@ -10,6 +10,8 @@ import 'package:poc/overlay/models/dialog_model.dart';
 import 'package:poc/overlay/models/snackbar_model.dart';
 import 'package:poc/overlay/overlay_service.dart';
 import 'package:poc/providers/dialog_provider.dart';
+import 'package:poc/theme/generated_tokens/kp_color.dart';
+import 'package:poc/theme/generated_tokens/kp_spacing.dart';
 import 'package:poc/widgets/countdown_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -158,14 +160,19 @@ class _DialogManagerState extends ConsumerState<OverlayManager> {
 
   void _showSnackBar(SnackBarRequest request) {
     final flushBar = Flushbar(
-      title: request.title,
-      titleText: request.titleWidget,
-      message: request.message,
-      messageText:
-          request.messageWidget ??
-          (request.message != null ? Text(request.message!) : null),
+      messageText: Container(
+        width: 200,
+        color: KpColor.successLight,
+        child: const Padding(
+          padding: EdgeInsets.all(KpSpacing.sm),
+          child: Text('xxx'),
+        ),
+      ),
       duration: Duration(seconds: request.durationSeconds),
       animationDuration: const Duration(milliseconds: 300),
+      backgroundColor: Colors.transparent,
+      titleColor: KpColor.textPrimaryLight,
+      messageColor: KpColor.textPrimaryLight,
     );
 
     flushBar.show(context);

@@ -1,5 +1,5 @@
 class KpDuration {
-  static const int fast = 150;
-  static const int medium = 300;
-  static const int slow = 600;
+  static const double fast = 150;
+  static const double medium = 300;
+  static const double slow = 600;
 }

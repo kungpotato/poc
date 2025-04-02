@@ -1,13 +1,13 @@
 class KpFont {
   static const String familyBase = 'Prompt';
   static const String familyHeading = 'Prompt';
-  static const int sizeXs = 12;
-  static const int sizeSm = 14;
-  static const int sizeMd = 16;
-  static const int sizeLg = 20;
-  static const int sizeXl = 24;
-  static const int sizeXxl = 32;
-  static const int weightRegular = 400;
-  static const int weightMedium = 500;
-  static const int weightBold = 700;
+  static const double sizeXs = 12;
+  static const double sizeSm = 14;
+  static const double sizeMd = 16;
+  static const double sizeLg = 20;
+  static const double sizeXl = 24;
+  static const double sizeXxl = 32;
+  static const double weightRegular = 400;
+  static const double weightMedium = 500;
+  static const double weightBold = 700;
 }

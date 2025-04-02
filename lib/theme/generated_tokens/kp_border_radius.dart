@@ -1,5 +1,5 @@
 class KpBorderRadius {
-  static const int sm = 4;
-  static const int md = 8;
-  static const int lg = 16;
+  static const double sm = 4;
+  static const double md = 8;
+  static const double lg = 16;
 }

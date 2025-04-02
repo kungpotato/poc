@@ -17,6 +17,14 @@ class KpColor {
   static const Color errorDark = Color(0xFFCF6679);
   static const Color onErrorLight = Color(0xFFFFFFFF);
   static const Color onErrorDark = Color(0xFF000000);
+  static const Color warningLight = Color(0xFFFFA000);
+  static const Color warningDark = Color(0xFFFFA000);
+  static const Color onWarningLight = Color(0xFF000000);
+  static const Color onWarningDark = Color(0xFF000000);
+  static const Color successLight = Color(0xFF43A047);
+  static const Color successDark = Color(0xFF43A047);
+  static const Color onSuccessLight = Color(0xFFFFFFFF);
+  static const Color onSuccessDark = Color(0xFFFFFFFF);
   static const Color textPrimaryLight = Color(0xFF212121);
   static const Color textPrimaryDark = Color(0xFFFFFFFF);
   static const Color textSecondaryLight = Color(0xFF757575);
