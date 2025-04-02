@@ -87,7 +87,7 @@ def generate_dart_class(name, props, token_map, indent=2):
     return '\n'.join(lines)
 
 
-def parse_tokens(data, output_dir='../lib/generated_tokens'):
+def parse_tokens(data, output_dir='../lib/theme/generated_tokens'):
     os.makedirs(output_dir, exist_ok=True)
     token_map = flatten_tokens(data)
 
