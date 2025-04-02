@@ -18,22 +18,33 @@ def camel_case(s):
 
 
 def infer_type(val):
+    if isinstance(val, str) and re.match(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$', val):
+        return 'Color'
     try:
         float_val = float(val)
         return 'int' if float_val.is_integer() else 'double'
     except:
-        pass
-    if isinstance(val, str) and re.match(r'^#([A-Fa-f0-9]{3,6})$', val):
         return 'String'
-    return 'String'
 
 
 def format_value(val):
-    try:
-        float_val = float(val)
-        return str(int(float_val)) if float_val.is_integer() else str(float_val)
-    except:
-        return f"'{val}'"
+    if isinstance(val, str):
+        if re.match(r'^#([A-Fa-f0-9]{6})$', val):
+            # Convert #RRGGBB to Color(0xFFRRGGBB)
+            return f'Color(0xFF{val[1:].upper()})'
+        elif re.match(r'^#([A-Fa-f0-9]{8})$', val):
+            # Convert #AARRGGBB directly
+            return f'Color(0x{val[1:].upper()})'
+        try:
+            float_val = float(val)
+            return str(int(float_val)) if float_val.is_integer() else str(float_val)
+        except:
+            return f"'{val}'"
+
+    if isinstance(val, (int, float)):
+        return str(val)
+
+    return f"'{val}'"
 
 
 def resolve_references(value, token_map):
@@ -65,9 +76,11 @@ def flatten_tokens(data, prefix='', flat_map=None):
 
 def generate_dart_class(name, props, token_map, indent=2):
     class_name = pascal_case(name)
-    lines = [f'class {class_name} {{']
+    lines = []
+    has_color = False
 
     def walk(sub_props, path_stack=[]):
+        nonlocal has_color
         for key, val in sub_props.items():
             new_path = path_stack + [key]
             if isinstance(val, dict):
@@ -76,13 +89,34 @@ def generate_dart_class(name, props, token_map, indent=2):
                     resolved = resolve_references(val['value'], token_map)
                     if resolved is not None:
                         dart_type = infer_type(resolved)
+                        if dart_type == 'Color':
+                            has_color = True
                         formatted_val = format_value(resolved)
                         lines.append(
                             ' ' * indent + f'static const {dart_type} {field_name} = {formatted_val};')
+                elif 'light' in val or 'dark' in val:
+                    for theme_mode in ['light', 'dark']:
+                        if theme_mode in val and isinstance(val[theme_mode], dict) and 'value' in \
+                                val[theme_mode]:
+                            themed_path = new_path + [theme_mode]
+                            field_name = camel_case('_'.join(themed_path))
+                            resolved = resolve_references(val[theme_mode]['value'], token_map)
+                            if resolved is not None:
+                                dart_type = infer_type(resolved)
+                                if dart_type == 'Color':
+                                    has_color = True
+                                formatted_val = format_value(resolved)
+                                lines.append(
+                                    ' ' * indent + f'static const {dart_type} {field_name} = {formatted_val};')
                 else:
                     walk(val, new_path)
 
     walk(props)
+
+    if has_color:
+        lines.insert(0, "import 'package:flutter/material.dart';\n")
+
+    lines.insert(1 if has_color else 0, f'class Kp{class_name} {{')
     lines.append('}')
     return '\n'.join(lines)
 
@@ -94,7 +128,7 @@ def parse_tokens(data, output_dir='../lib/theme/generated_tokens'):
     for group_name, group_values in data.items():
         for class_name, class_props in group_values.items():
             dart_code = generate_dart_class(class_name, class_props, token_map)
-            file_path = os.path.join(output_dir, f'{camel_case(class_name)}.dart')
+            file_path = os.path.join(output_dir, f'kp_{camel_case(class_name)}.dart')
             with open(file_path, 'w') as f:
                 f.write(dart_code)
             print(f"Generated: {file_path}")

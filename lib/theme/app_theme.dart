@@ -2,68 +2,63 @@ import 'package:color_type_converter/color_type_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:poc/theme/app_appbar.dart';
-import 'package:poc/theme/app_color.dart';
 import 'package:poc/theme/dark_color.dart';
+import 'package:poc/theme/generated_tokens/kp_color.dart';
 import 'package:poc/theme/light_color.dart';
-import 'package:poc/theme/text_theme.dart' show textTheme;
+import 'package:poc/theme/text_theme.dart';
 
-final inputDecoration = InputDecorationTheme(
-  border: const UnderlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey),
-  ),
-  focusColor: KpColorSeed.instance.primary,
+const inputDecoration = InputDecorationTheme(
+  border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+  focusColor: KpColor.primaryLight,
   filled: true,
   isDense: true,
-  // contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
-  labelStyle: const TextStyle(color: Colors.black87, fontSize: 14),
-  hintStyle: const TextStyle(color: Colors.black87, fontSize: 14),
-  fillColor: KpColorSeed.instance.surfaceLight,
-  focusedBorder: const UnderlineInputBorder(
+  labelStyle: TextStyle(color: Colors.black87, fontSize: 14),
+  hintStyle: TextStyle(color: Colors.black87, fontSize: 14),
+  fillColor: KpColor.surfaceLight,
+  focusedBorder: UnderlineInputBorder(
     borderSide: BorderSide(color: Colors.grey),
   ),
-  enabledBorder: const UnderlineInputBorder(
+  enabledBorder: UnderlineInputBorder(
     borderSide: BorderSide(color: Colors.grey),
   ),
-  errorBorder: const UnderlineInputBorder(
+  errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+  focusedErrorBorder: UnderlineInputBorder(
     borderSide: BorderSide(color: Colors.red),
   ),
-  focusedErrorBorder: const UnderlineInputBorder(
-    borderSide: BorderSide(color: Colors.red),
-  ),
-  outlineBorder: const BorderSide(color: Colors.grey),
-  prefixStyle: TextStyle(color: KpColorSeed.instance.primary),
+  outlineBorder: BorderSide(color: Colors.grey),
+  prefixStyle: TextStyle(color: KpColor.primaryLight),
   prefixIconColor: Colors.grey,
 );
 
 class MyThemes {
   static final lightTheme = ThemeData(
     useMaterial3: false,
+    brightness: Brightness.light,
     colorScheme: lightColorScheme,
     iconTheme: const IconThemeData(color: Colors.white, size: 16),
     listTileTheme: const ListTileThemeData(tileColor: Colors.white),
     checkboxTheme: CheckboxThemeData(
-      fillColor: WidgetStateProperty.all(KpColorSeed.instance.primary),
+      fillColor: WidgetStateProperty.all(KpColor.primaryLight),
     ),
-    primaryColor: KpColorSeed.instance.primary,
+    primaryColor: KpColor.primaryLight,
     primarySwatch: ColorConverter<MaterialColor>().convert(
-      KpColorSeed.instance.primary,
+      KpColor.primaryLight,
     ),
-    fontFamily: GoogleFonts.prompt(fontStyle: FontStyle.normal).fontFamily,
-    brightness: Brightness.light,
+    fontFamily: GoogleFonts.prompt().fontFamily,
     appBarTheme: AppAppbar.appbar,
-    scaffoldBackgroundColor: KpColorSeed.instance.scaffoldLight,
+    scaffoldBackgroundColor: KpColor.backgroundLight,
     buttonTheme: ButtonThemeData(
-      buttonColor: KpColorSeed.instance.primary,
+      buttonColor: KpColor.primaryLight,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: KpColorSeed.instance.primary),
+        side: const BorderSide(color: KpColor.primaryLight),
       ),
       textTheme: ButtonTextTheme.primary,
     ),
     dividerTheme: const DividerThemeData(space: 1),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: KpColorSeed.instance.primary,
+        backgroundColor: KpColor.primaryLight,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         disabledBackgroundColor: Colors.grey,
@@ -71,80 +66,73 @@ class MyThemes {
       ),
     ),
     textTheme: textTheme,
-    progressIndicatorTheme: ProgressIndicatorThemeData(
-      color: KpColorSeed.instance.primary,
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: KpColor.primaryLight,
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
-      selectedItemColor: KpColorSeed.instance.primary,
+      selectedItemColor: KpColor.primaryLight,
       unselectedItemColor: Colors.grey,
       type: BottomNavigationBarType.fixed,
     ),
     inputDecorationTheme: inputDecoration,
-    textSelectionTheme: TextSelectionThemeData(
-      cursorColor: KpColorSeed.instance.primary,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: KpColor.primaryLight,
     ),
-    datePickerTheme: DatePickerThemeData(
-      backgroundColor: KpColorSeed.instance.surfaceLight,
-      headerBackgroundColor: KpColorSeed.instance.primary,
-      todayBorder: BorderSide(color: KpColorSeed.instance.primary),
+    datePickerTheme: const DatePickerThemeData(
+      backgroundColor: KpColor.surfaceLight,
+      headerBackgroundColor: KpColor.primaryLight,
+      todayBorder: BorderSide(color: KpColor.primaryLight),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        textStyle: const TextStyle(
-          color: Colors.black87,
-          fontWeight: FontWeight.bold,
-        ),
-        foregroundColor: KpColorSeed.instance.primary,
+        textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        foregroundColor: KpColor.primaryLight,
       ),
     ),
-    dropdownMenuTheme: DropdownMenuThemeData(
+    dropdownMenuTheme: const DropdownMenuThemeData(
       inputDecorationTheme: inputDecoration,
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: KpColorSeed.instance.primary,
-      extendedTextStyle: const TextStyle(color: Colors.white),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: KpColor.primaryLight,
+      extendedTextStyle: TextStyle(color: Colors.white),
       foregroundColor: Colors.white,
     ),
   );
 
   static final darkTheme = ThemeData(
     useMaterial3: false,
+    brightness: Brightness.dark,
     colorScheme: darkColorScheme,
     iconTheme: const IconThemeData(color: Colors.white, size: 16),
     checkboxTheme: CheckboxThemeData(
-      fillColor: WidgetStateProperty.all(KpColorSeed.instance.primary),
+      fillColor: WidgetStateProperty.all(KpColor.primaryDark),
     ),
-    primaryColor: KpColorSeed.instance.primary,
-    primarySwatch: ColorConverter<MaterialColor>().convert(
-      KpColorSeed.instance.primary,
-    ),
-    fontFamily: GoogleFonts.prompt(fontStyle: FontStyle.normal).fontFamily,
-    brightness: Brightness.dark,
+    primaryColor: KpColor.primaryDark,
+    primarySwatch: ColorConverter<MaterialColor>().convert(KpColor.primaryDark),
+    fontFamily: GoogleFonts.prompt().fontFamily,
     appBarTheme: AppBarTheme(
-      backgroundColor: KpColorSeed.instance.surfaceDark,
+      backgroundColor: KpColor.surfaceDark,
       iconTheme: const IconThemeData(color: Colors.white),
-      titleTextStyle: const TextStyle(
+      titleTextStyle: GoogleFonts.prompt(
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
     ),
-    scaffoldBackgroundColor: KpColorSeed.instance.scaffoldDark,
-    listTileTheme: ListTileThemeData(
-      tileColor: KpColorSeed.instance.surfaceDark,
-    ),
+    scaffoldBackgroundColor: KpColor.backgroundDark,
+    listTileTheme: const ListTileThemeData(tileColor: KpColor.surfaceDark),
     buttonTheme: ButtonThemeData(
-      buttonColor: KpColorSeed.instance.primary,
+      buttonColor: KpColor.primaryDark,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: BorderSide(color: KpColorSeed.instance.primary),
+        side: const BorderSide(color: KpColor.primaryDark),
       ),
       textTheme: ButtonTextTheme.primary,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: KpColorSeed.instance.primary,
+        backgroundColor: KpColor.primaryDark,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         disabledBackgroundColor: Colors.grey,
@@ -153,12 +141,12 @@ class MyThemes {
     ),
     dividerTheme: const DividerThemeData(space: 1),
     textTheme: textTheme,
-    progressIndicatorTheme: ProgressIndicatorThemeData(
-      color: KpColorSeed.instance.primary,
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: KpColor.primaryDark,
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.black,
-      selectedItemColor: KpColorSeed.instance.primary,
+      selectedItemColor: KpColor.primaryDark,
       unselectedItemColor: Colors.white60,
       type: BottomNavigationBarType.fixed,
     ),
@@ -167,11 +155,11 @@ class MyThemes {
       hintStyle: const TextStyle(color: Colors.white60),
       fillColor: Colors.black54,
     ),
-    textSelectionTheme: TextSelectionThemeData(
-      cursorColor: KpColorSeed.instance.primary,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: KpColor.primaryDark,
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: KpColorSeed.instance.primary,
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: KpColor.primaryDark,
       foregroundColor: Colors.white,
     ),
   );

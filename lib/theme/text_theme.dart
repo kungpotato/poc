@@ -1,65 +1,80 @@
-import 'package:color_type_converter/exports.dart';
-import 'package:poc/theme/app_color.dart' show KpColorSeed;
+import 'package:flutter/material.dart';
+import 'package:poc/theme/generated_tokens/kp_font.dart';
 
 final textTheme = TextTheme(
-  titleMedium: TextStyle(
-    fontSize: 18, // Increased for better readability
-    color: KpColorSeed.instance.front,
-  ),
   titleLarge: TextStyle(
-    fontSize: 24, // Increased for better hierarchy
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeXl.toDouble(),
+    fontWeight: FontWeight.w700,
+    fontFamily: KpFont.familyHeading,
+  ),
+  titleMedium: TextStyle(
+    fontSize: KpFont.sizeLg.toDouble(),
+    fontWeight: FontWeight.w500,
+    fontFamily: KpFont.familyHeading,
   ),
   titleSmall: TextStyle(
-    fontSize: 16, // Adjusted for consistency
-    color: KpColorSeed.instance.front,
-  ),
-  bodySmall: TextStyle(
-    fontSize: 14, // Standard for small body text
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeMd.toDouble(),
+    fontWeight: FontWeight.w500,
+    fontFamily: KpFont.familyBase,
   ),
   bodyLarge: TextStyle(
-    fontSize: 20, // Suitable for important body content
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeMd.toDouble(),
+    fontWeight: FontWeight.w400,
+    fontFamily: KpFont.familyBase,
   ),
   bodyMedium: TextStyle(
-    fontSize: 18, // Standard body text size
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeSm.toDouble(),
+    fontWeight: FontWeight.w400,
+    fontFamily: KpFont.familyBase,
+  ),
+  bodySmall: TextStyle(
+    fontSize: KpFont.sizeXs.toDouble(),
+    fontWeight: FontWeight.w400,
+    fontFamily: KpFont.familyBase,
   ),
   displayLarge: TextStyle(
-    fontSize: 48, // Suitable for large headers or banners
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeXxl.toDouble(),
+    fontWeight: FontWeight.w700,
+    fontFamily: KpFont.familyHeading,
   ),
   displayMedium: TextStyle(
-    fontSize: 36, // Used for sub-headers
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeXl.toDouble(),
+    fontWeight: FontWeight.w700,
+    fontFamily: KpFont.familyHeading,
   ),
   displaySmall: TextStyle(
-    fontSize: 28, // Suitable for smaller section titles
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeLg.toDouble(),
+    fontWeight: FontWeight.w700,
+    fontFamily: KpFont.familyHeading,
   ),
   headlineLarge: TextStyle(
-    fontSize: 32, // Prominent headlines
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeXl.toDouble(),
+    fontWeight: FontWeight.w700,
+    fontFamily: KpFont.familyHeading,
   ),
   headlineMedium: TextStyle(
-    fontSize: 28, // Section headers
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeLg.toDouble(),
+    fontWeight: FontWeight.w500,
+    fontFamily: KpFont.familyHeading,
   ),
   headlineSmall: TextStyle(
-    fontSize: 24, // Smaller section headers
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeMd.toDouble(),
+    fontWeight: FontWeight.w500,
+    fontFamily: KpFont.familyHeading,
   ),
   labelLarge: TextStyle(
-    fontSize: 18, // For buttons and labels
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeSm.toDouble(),
+    fontWeight: FontWeight.w500,
+    fontFamily: KpFont.familyBase,
   ),
   labelMedium: TextStyle(
-    fontSize: 16, // Medium labels
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeXs.toDouble(),
+    fontWeight: FontWeight.w500,
+    fontFamily: KpFont.familyBase,
   ),
   labelSmall: TextStyle(
-    fontSize: 14, // Small labels and captions
-    color: KpColorSeed.instance.front,
+    fontSize: KpFont.sizeXs.toDouble(),
+    fontWeight: FontWeight.w400,
+    fontFamily: KpFont.familyBase,
   ),
 );
