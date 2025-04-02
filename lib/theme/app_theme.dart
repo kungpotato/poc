@@ -1,9 +1,9 @@
 import 'package:color_type_converter/color_type_converter.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:poc/theme/app_appbar.dart';
 import 'package:poc/theme/dark_color.dart';
 import 'package:poc/theme/generated_tokens/kp_color.dart';
+import 'package:poc/theme/generated_tokens/kp_font.dart';
 import 'package:poc/theme/light_color.dart';
 import 'package:poc/theme/text_theme.dart';
 
@@ -44,7 +44,7 @@ class MyThemes {
     primarySwatch: ColorConverter<MaterialColor>().convert(
       KpColor.primaryLight,
     ),
-    fontFamily: GoogleFonts.prompt().fontFamily,
+    fontFamily: KpFont.familyBase,
     appBarTheme: AppAppbar.appbar,
     scaffoldBackgroundColor: KpColor.backgroundLight,
     buttonTheme: ButtonThemeData(
@@ -110,11 +110,12 @@ class MyThemes {
     ),
     primaryColor: KpColor.primaryDark,
     primarySwatch: ColorConverter<MaterialColor>().convert(KpColor.primaryDark),
-    fontFamily: GoogleFonts.prompt().fontFamily,
-    appBarTheme: AppBarTheme(
+    fontFamily: KpFont.familyBase,
+    appBarTheme: const AppBarTheme(
       backgroundColor: KpColor.surfaceDark,
-      iconTheme: const IconThemeData(color: Colors.white),
-      titleTextStyle: GoogleFonts.prompt(
+      iconTheme: IconThemeData(color: Colors.white),
+      titleTextStyle: TextStyle(
+        fontFamily: KpFont.familyBase,
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.bold,

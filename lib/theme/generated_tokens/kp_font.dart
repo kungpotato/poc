@@ -1,6 +1,6 @@
 class KpFont {
-  static const String familyBase = 'Roboto';
-  static const String familyHeading = 'Roboto Slab';
+  static const String familyBase = 'Prompt';
+  static const String familyHeading = 'Prompt';
   static const int sizeXs = 12;
   static const int sizeSm = 14;
   static const int sizeMd = 16;

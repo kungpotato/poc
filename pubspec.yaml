@@ -19,7 +19,6 @@ dependencies:
   go_router: ^14.8.1
   url_launcher: ^6.3.1
   getwidget: ^6.0.0
-  google_fonts: ^6.2.1
   color_type_converter: ^1.0.5
   riverpod_generator: ^2.6.5
   riverpod: ^2.6.1
@@ -47,3 +46,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  fonts:
+    - family: Prompt
+      fonts:
+        - asset: fonts/prompt/Prompt-Regular.ttf
+        - asset: fonts/prompt/Prompt-Italic.ttf
+          weight: 700
