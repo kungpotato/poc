@@ -18,12 +18,12 @@ class TodoRepository {
 
   final Dio _dio;
 
-  Future<List<TodoModel>> fetchTodos() async {
-    final response = await _dio.get('/todos');
-    final data = response.data as List;
-
-    return data
-        .map((e) => TodoModel.fromJson(e as Map<String, dynamic>))
-        .toList();
+  Stream<List<TodoModel>> fetchTodos() {
+    return Stream.fromFuture(_dio.get('/todos')).map(
+      (response) =>
+          (response.data as List)
+              .map((e) => TodoModel.fromJson(e as Map<String, dynamic>))
+              .toList(),
+    );
   }
 }

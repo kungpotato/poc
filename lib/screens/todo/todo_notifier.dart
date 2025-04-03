@@ -8,15 +8,10 @@ part 'todo_notifier.g.dart';
 
 @riverpod
 class TodoNotifier extends _$TodoNotifier {
-  final _todoController = PublishSubject<TodoState>();
-
   @override
   Stream<TodoState> build() {
-    ref.onDispose(_todoController.close);
-    getTodo();
-
     return CombineLatestStream.combine2(
-      _todoController.stream,
+      getTodo(),
       ref.watch(wsEventProvider('trade').select((value) => value)),
       (a, b) {
         return a;
@@ -24,10 +19,15 @@ class TodoNotifier extends _$TodoNotifier {
     );
   }
 
-  Future<void> getTodo() async {
+  Stream<TodoState> getTodo() {
+    return ref
+        .read(todoRepositoryProvider)
+        .fetchTodos()
+        .map((event) => TodoState(todos: event));
+  }
+
+  Future<void> refresh() async {
     state = const AsyncLoading();
-    await Future.delayed(const Duration(seconds: 2));
-    final res = await ref.read(todoRepositoryProvider).fetchTodos();
-    _todoController.add(TodoState(todos: res));
+    state = await AsyncValue.guard(() => getTodo().first);
   }
 }

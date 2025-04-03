@@ -10,7 +10,17 @@ class TodoScreen extends ConsumerWidget {
     final todosAsync = ref.watch(todoNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Todo List')),
+      appBar: AppBar(
+        title: const Text('Todo List'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              ref.watch(todoNotifierProvider.notifier).refresh();
+            },
+            icon: const Icon(Icons.account_circle_rounded),
+          ),
+        ],
+      ),
       body: todosAsync.when(
         data:
             (data) => ListView.builder(
