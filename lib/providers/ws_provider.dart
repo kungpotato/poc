@@ -22,5 +22,12 @@ SmartWebSocketService smartWs(Ref ref) {
 @riverpod
 Raw<Stream<dynamic>> wsEvent(Ref ref, String eventType) {
   final ws = ref.watch(smartWsProvider);
-  return ws.stream.where((e) => e['e'] == eventType).doOnData(print);
+  return ws.stream
+      .bufferTime(const Duration(seconds: 3))
+      .map(
+        (event) => event
+            .where((element) => element['e'] == eventType)
+            .map((e) => {'price': e['p'], 'symbol': e['s']}),
+      )
+      .doOnData((event) => print(event.length));
 }

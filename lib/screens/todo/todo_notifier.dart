@@ -23,7 +23,7 @@ class TodoNotifier extends _$TodoNotifier {
     return ref
         .read(todoRepositoryProvider)
         .fetchTodos()
-        .map((event) => TodoState(todos: event));
+        .map((event) => TodoState(todos: event.take(3).toList()));
   }
 
   Future<void> refresh() async {
