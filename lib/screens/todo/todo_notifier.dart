@@ -15,7 +15,9 @@ class TodoNotifier extends _$TodoNotifier {
       getTodo(),
       ref.watch(wsEventProvider('trade').select((value) => value)),
       (a, b) {
-        return TodoState(todos: a, coins: b.take(3).toList());
+        return state.value != null
+            ? state.value!.copyWith(coins: b.take(3).toList())
+            : TodoState(todos: a, coins: b.take(3).toList());
       },
     );
   }
