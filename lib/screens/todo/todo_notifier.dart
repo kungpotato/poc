@@ -1,4 +1,5 @@
 import 'package:poc/providers/ws_provider.dart';
+import 'package:poc/screens/todo/todo_model.dart';
 import 'package:poc/screens/todo/todo_repository.dart';
 import 'package:poc/screens/todo/todo_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,20 +15,29 @@ class TodoNotifier extends _$TodoNotifier {
       getTodo(),
       ref.watch(wsEventProvider('trade').select((value) => value)),
       (a, b) {
-        return a;
+        return TodoState(todos: a, coins: b.take(3).toList());
       },
     );
   }
 
-  Stream<TodoState> getTodo() {
+  Stream<List<TodoModel>> getTodo() {
     return ref
         .read(todoRepositoryProvider)
         .fetchTodos()
-        .map((event) => TodoState(todos: event.take(3).toList()));
+        .map((event) {
+          return event.take(3).toList();
+        })
+        .doOnError((p0, p1) {
+          print(p0);
+          print(p1);
+        });
   }
 
   Future<void> refresh() async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => getTodo().first);
+    state = await AsyncValue.guard(() async {
+      final data = await getTodo().first;
+      return state.value!.copyWith(todos: data);
+    });
   }
 }

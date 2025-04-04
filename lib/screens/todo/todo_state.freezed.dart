@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TodoState {
 
- List<TodoModel> get todos;
+ List<TodoModel> get todos; List<Coin> get coins;
 /// Create a copy of TodoState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $TodoStateCopyWith<TodoState> get copyWith => _$TodoStateCopyWithImpl<TodoState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TodoState&&const DeepCollectionEquality().equals(other.todos, todos));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TodoState&&const DeepCollectionEquality().equals(other.todos, todos)&&const DeepCollectionEquality().equals(other.coins, coins));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(todos));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(todos),const DeepCollectionEquality().hash(coins));
 
 @override
 String toString() {
-  return 'TodoState(todos: $todos)';
+  return 'TodoState(todos: $todos, coins: $coins)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $TodoStateCopyWith<$Res>  {
   factory $TodoStateCopyWith(TodoState value, $Res Function(TodoState) _then) = _$TodoStateCopyWithImpl;
 @useResult
 $Res call({
- List<TodoModel> todos
+ List<TodoModel> todos, List<Coin> coins
 });
 
 
@@ -63,10 +63,11 @@ class _$TodoStateCopyWithImpl<$Res>
 
 /// Create a copy of TodoState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? todos = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? todos = null,Object? coins = null,}) {
   return _then(_self.copyWith(
 todos: null == todos ? _self.todos : todos // ignore: cast_nullable_to_non_nullable
-as List<TodoModel>,
+as List<TodoModel>,coins: null == coins ? _self.coins : coins // ignore: cast_nullable_to_non_nullable
+as List<Coin>,
   ));
 }
 
@@ -77,7 +78,7 @@ as List<TodoModel>,
 
 
 class _TodoState extends TodoState {
-   _TodoState({required final  List<TodoModel> todos}): _todos = todos,super._();
+   _TodoState({required final  List<TodoModel> todos, required final  List<Coin> coins}): _todos = todos,_coins = coins,super._();
   
 
  final  List<TodoModel> _todos;
@@ -85,6 +86,13 @@ class _TodoState extends TodoState {
   if (_todos is EqualUnmodifiableListView) return _todos;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_todos);
+}
+
+ final  List<Coin> _coins;
+@override List<Coin> get coins {
+  if (_coins is EqualUnmodifiableListView) return _coins;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_coins);
 }
 
 
@@ -98,16 +106,16 @@ _$TodoStateCopyWith<_TodoState> get copyWith => __$TodoStateCopyWithImpl<_TodoSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TodoState&&const DeepCollectionEquality().equals(other._todos, _todos));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TodoState&&const DeepCollectionEquality().equals(other._todos, _todos)&&const DeepCollectionEquality().equals(other._coins, _coins));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_todos));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_todos),const DeepCollectionEquality().hash(_coins));
 
 @override
 String toString() {
-  return 'TodoState(todos: $todos)';
+  return 'TodoState(todos: $todos, coins: $coins)';
 }
 
 
@@ -118,7 +126,7 @@ abstract mixin class _$TodoStateCopyWith<$Res> implements $TodoStateCopyWith<$Re
   factory _$TodoStateCopyWith(_TodoState value, $Res Function(_TodoState) _then) = __$TodoStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<TodoModel> todos
+ List<TodoModel> todos, List<Coin> coins
 });
 
 
@@ -135,10 +143,11 @@ class __$TodoStateCopyWithImpl<$Res>
 
 /// Create a copy of TodoState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? todos = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? todos = null,Object? coins = null,}) {
   return _then(_TodoState(
 todos: null == todos ? _self._todos : todos // ignore: cast_nullable_to_non_nullable
-as List<TodoModel>,
+as List<TodoModel>,coins: null == coins ? _self._coins : coins // ignore: cast_nullable_to_non_nullable
+as List<Coin>,
   ));
 }
 

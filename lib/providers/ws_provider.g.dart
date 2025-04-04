@@ -22,7 +22,7 @@ final smartWsProvider = Provider<SmartWebSocketService>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SmartWsRef = ProviderRef<SmartWebSocketService>;
-String _$wsEventHash() => r'e120d9099af960ab9921ef50927dadc9c8a7153f';
+String _$wsEventHash() => r'196a5ebb4bc62e6d1e35bfcbc8a4c7e616118b0c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -50,7 +50,7 @@ class _SystemHash {
 const wsEventProvider = WsEventFamily();
 
 /// See also [wsEvent].
-class WsEventFamily extends Family<Raw<Stream<dynamic>>> {
+class WsEventFamily extends Family<Raw<Stream<List<Coin>>>> {
   /// See also [wsEvent].
   const WsEventFamily();
 
@@ -80,7 +80,7 @@ class WsEventFamily extends Family<Raw<Stream<dynamic>>> {
 }
 
 /// See also [wsEvent].
-class WsEventProvider extends AutoDisposeProvider<Raw<Stream<dynamic>>> {
+class WsEventProvider extends AutoDisposeProvider<Raw<Stream<List<Coin>>>> {
   /// See also [wsEvent].
   WsEventProvider(String eventType)
     : this._internal(
@@ -110,7 +110,7 @@ class WsEventProvider extends AutoDisposeProvider<Raw<Stream<dynamic>>> {
 
   @override
   Override overrideWith(
-    Raw<Stream<dynamic>> Function(WsEventRef provider) create,
+    Raw<Stream<List<Coin>>> Function(WsEventRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -127,7 +127,7 @@ class WsEventProvider extends AutoDisposeProvider<Raw<Stream<dynamic>>> {
   }
 
   @override
-  AutoDisposeProviderElement<Raw<Stream<dynamic>>> createElement() {
+  AutoDisposeProviderElement<Raw<Stream<List<Coin>>>> createElement() {
     return _WsEventProviderElement(this);
   }
 
@@ -147,13 +147,13 @@ class WsEventProvider extends AutoDisposeProvider<Raw<Stream<dynamic>>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin WsEventRef on AutoDisposeProviderRef<Raw<Stream<dynamic>>> {
+mixin WsEventRef on AutoDisposeProviderRef<Raw<Stream<List<Coin>>>> {
   /// The parameter `eventType` of this provider.
   String get eventType;
 }
 
 class _WsEventProviderElement
-    extends AutoDisposeProviderElement<Raw<Stream<dynamic>>>
+    extends AutoDisposeProviderElement<Raw<Stream<List<Coin>>>>
     with WsEventRef {
   _WsEventProviderElement(super.provider);
 

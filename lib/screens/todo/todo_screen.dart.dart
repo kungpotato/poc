@@ -21,17 +21,40 @@ class TodoScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: todosAsync.when(
-        data:
-            (data) => ListView.builder(
-              itemCount: data.todos.length,
-              itemBuilder: (context, index) {
-                final todo = data.todos[index];
-                return ListTile(title: Text(todo.title));
-              },
-            ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+      body: Column(
+        children: [
+          todosAsync.when(
+            data:
+                (data) => Flexible(
+                  child: ListView.builder(
+                    itemCount: data.todos.length,
+                    itemBuilder: (context, index) {
+                      final todo = data.todos[index];
+                      return ListTile(title: Text(todo.title));
+                    },
+                  ),
+                ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Error: $err')),
+          ),
+          todosAsync.when(
+            data:
+                (data) => Flexible(
+                  child: ListView.builder(
+                    itemCount: data.coins.length,
+                    itemBuilder: (context, index) {
+                      final todo = data.coins[index];
+                      return ListTile(
+                        title: Text(todo.symbol),
+                        trailing: Text(todo.price.toString()),
+                      );
+                    },
+                  ),
+                ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Error: $err')),
+          ),
+        ],
       ),
     );
   }
