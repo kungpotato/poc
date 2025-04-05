@@ -117,6 +117,11 @@ class HomeScreen extends ConsumerWidget {
               onPressed: () => context.push('/topgain'),
               child: const Text('Go to Topgain Screen'),
             ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => context.push('/orderbook'),
+              child: const Text('Go to Orderbook Screen'),
+            ),
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poc/screens/order_book/order_book.dart';
 import 'package:poc/screens/todo/todo_state.dart';
 import 'package:poc/screens/top_gain/coin.dart';
 import 'package:poc/service/ws_service.dart';
@@ -25,6 +26,20 @@ SmartWebSocketService coinWs(Ref ref) {
 SmartWebSocketService binanceMarketWs(Ref ref) {
   final service = SmartWebSocketService(
     'wss://stream.binance.com:9443/ws/!ticker@arr',
+  );
+
+  service.connect();
+  ref.onCancel(service.pause);
+  ref.onResume(service.resume);
+  ref.onDispose(service.dispose);
+
+  return service;
+}
+
+@Riverpod(keepAlive: false)
+SmartWebSocketService binanceDepthWs(Ref ref, String symbol) {
+  final service = SmartWebSocketService(
+    'wss://stream.binance.com:9443/ws/$symbol@depth20@100ms',
   );
 
   service.connect();
@@ -77,6 +92,23 @@ Stream<Map<String, BinanceCoin>> binanceCoinMap(Ref ref) {
           print(stack);
           return <String, BinanceCoin>{};
         }
+      })
+      .doOnError((err, stack) {
+        print('❌ Stream error: $err');
+        print(stack);
+      });
+}
+
+@riverpod
+Stream<OrderBookSnapshot> orderBook(Ref ref, String symbol) {
+  final channel = ref.watch(binanceDepthWsProvider(symbol));
+
+  return channel.stream
+      .bufferTime(const Duration(seconds: 1)) // ~60fps
+      .where((buffer) => buffer.isNotEmpty)
+      .map((buffer) {
+        final latestJson = buffer.last;
+        return OrderBookSnapshot.fromJson(latestJson);
       })
       .doOnError((err, stack) {
         print('❌ Stream error: $err');
