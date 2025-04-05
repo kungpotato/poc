@@ -16,7 +16,10 @@ class OrderBookPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
         data: (data) {
-          return OrderBookTriangleView(asks: data.asks, bids: data.bids);
+          return InteractiveOrderBookTriangleView(
+            asks: data.asks,
+            bids: data.bids,
+          );
         },
       ),
     );
