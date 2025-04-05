@@ -56,13 +56,22 @@ class SmartWebSocketService {
   }
 
   void _onMessage(dynamic data) {
+    // print(data);
     if (_isPaused) return;
     try {
       final json = jsonDecode(data as String);
       if (json is Map<String, dynamic>) {
         _eventSubject.add(json);
+      } else if (json is List) {
+        for (final item in json) {
+          if (item is Map<String, dynamic>) {
+            _eventSubject.add(item);
+          }
+        }
       }
-    } catch (_) {}
+    } catch (err) {
+      print(err);
+    }
   }
 
   void send(Map<String, dynamic> data) {

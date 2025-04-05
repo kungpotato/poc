@@ -6,23 +6,41 @@ part of 'ws_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$smartWsHash() => r'200652d41a932c8036c7cc4941c0022024b96815';
+String _$coinWsHash() => r'4f04abe60b95d4611f4af76a3a2e94d4a19c59c9';
 
-/// See also [smartWs].
-@ProviderFor(smartWs)
-final smartWsProvider = Provider<SmartWebSocketService>.internal(
-  smartWs,
-  name: r'smartWsProvider',
+/// See also [coinWs].
+@ProviderFor(coinWs)
+final coinWsProvider = Provider<SmartWebSocketService>.internal(
+  coinWs,
+  name: r'coinWsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$smartWsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$coinWsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef SmartWsRef = ProviderRef<SmartWebSocketService>;
-String _$wsEventHash() => r'196a5ebb4bc62e6d1e35bfcbc8a4c7e616118b0c';
+typedef CoinWsRef = ProviderRef<SmartWebSocketService>;
+String _$binanceMarketWsHash() => r'ed4a2ef5f19ffb46c3de0ad493566d3dff7e5c95';
+
+/// See also [binanceMarketWs].
+@ProviderFor(binanceMarketWs)
+final binanceMarketWsProvider = Provider<SmartWebSocketService>.internal(
+  binanceMarketWs,
+  name: r'binanceMarketWsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$binanceMarketWsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef BinanceMarketWsRef = ProviderRef<SmartWebSocketService>;
+String _$wsEventHash() => r'2e8ff6d3b2602d5960aaeac7cdef7e1c6397b6cc';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -50,7 +68,7 @@ class _SystemHash {
 const wsEventProvider = WsEventFamily();
 
 /// See also [wsEvent].
-class WsEventFamily extends Family<Raw<Stream<List<Coin>>>> {
+class WsEventFamily extends Family<Raw<Stream<List<KpCoin>>>> {
   /// See also [wsEvent].
   const WsEventFamily();
 
@@ -80,7 +98,7 @@ class WsEventFamily extends Family<Raw<Stream<List<Coin>>>> {
 }
 
 /// See also [wsEvent].
-class WsEventProvider extends AutoDisposeProvider<Raw<Stream<List<Coin>>>> {
+class WsEventProvider extends AutoDisposeProvider<Raw<Stream<List<KpCoin>>>> {
   /// See also [wsEvent].
   WsEventProvider(String eventType)
     : this._internal(
@@ -110,7 +128,7 @@ class WsEventProvider extends AutoDisposeProvider<Raw<Stream<List<Coin>>>> {
 
   @override
   Override overrideWith(
-    Raw<Stream<List<Coin>>> Function(WsEventRef provider) create,
+    Raw<Stream<List<KpCoin>>> Function(WsEventRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -127,7 +145,7 @@ class WsEventProvider extends AutoDisposeProvider<Raw<Stream<List<Coin>>>> {
   }
 
   @override
-  AutoDisposeProviderElement<Raw<Stream<List<Coin>>>> createElement() {
+  AutoDisposeProviderElement<Raw<Stream<List<KpCoin>>>> createElement() {
     return _WsEventProviderElement(this);
   }
 
@@ -147,13 +165,13 @@ class WsEventProvider extends AutoDisposeProvider<Raw<Stream<List<Coin>>>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin WsEventRef on AutoDisposeProviderRef<Raw<Stream<List<Coin>>>> {
+mixin WsEventRef on AutoDisposeProviderRef<Raw<Stream<List<KpCoin>>>> {
   /// The parameter `eventType` of this provider.
   String get eventType;
 }
 
 class _WsEventProviderElement
-    extends AutoDisposeProviderElement<Raw<Stream<List<Coin>>>>
+    extends AutoDisposeProviderElement<Raw<Stream<List<KpCoin>>>>
     with WsEventRef {
   _WsEventProviderElement(super.provider);
 
@@ -161,5 +179,25 @@ class _WsEventProviderElement
   String get eventType => (origin as WsEventProvider).eventType;
 }
 
+String _$binanceCoinMapHash() => r'e2bb14eb573b62b10e3b19a9b0637b95f816991b';
+
+/// See also [binanceCoinMap].
+@ProviderFor(binanceCoinMap)
+final binanceCoinMapProvider =
+    AutoDisposeStreamProvider<Map<String, BinanceCoin>>.internal(
+      binanceCoinMap,
+      name: r'binanceCoinMapProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$binanceCoinMapHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef BinanceCoinMapRef =
+    AutoDisposeStreamProviderRef<Map<String, BinanceCoin>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

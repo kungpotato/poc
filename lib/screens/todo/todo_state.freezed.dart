@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TodoState {
 
- List<TodoModel> get todos; List<Coin> get coins;
+ List<TodoModel> get todos; List<KpCoin> get coins;
 /// Create a copy of TodoState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -46,7 +46,7 @@ abstract mixin class $TodoStateCopyWith<$Res>  {
   factory $TodoStateCopyWith(TodoState value, $Res Function(TodoState) _then) = _$TodoStateCopyWithImpl;
 @useResult
 $Res call({
- List<TodoModel> todos, List<Coin> coins
+ List<TodoModel> todos, List<KpCoin> coins
 });
 
 
@@ -67,7 +67,7 @@ class _$TodoStateCopyWithImpl<$Res>
   return _then(_self.copyWith(
 todos: null == todos ? _self.todos : todos // ignore: cast_nullable_to_non_nullable
 as List<TodoModel>,coins: null == coins ? _self.coins : coins // ignore: cast_nullable_to_non_nullable
-as List<Coin>,
+as List<KpCoin>,
   ));
 }
 
@@ -78,7 +78,7 @@ as List<Coin>,
 
 
 class _TodoState extends TodoState {
-   _TodoState({required final  List<TodoModel> todos, required final  List<Coin> coins}): _todos = todos,_coins = coins,super._();
+   _TodoState({required final  List<TodoModel> todos, required final  List<KpCoin> coins}): _todos = todos,_coins = coins,super._();
   
 
  final  List<TodoModel> _todos;
@@ -88,8 +88,8 @@ class _TodoState extends TodoState {
   return EqualUnmodifiableListView(_todos);
 }
 
- final  List<Coin> _coins;
-@override List<Coin> get coins {
+ final  List<KpCoin> _coins;
+@override List<KpCoin> get coins {
   if (_coins is EqualUnmodifiableListView) return _coins;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_coins);
@@ -126,7 +126,7 @@ abstract mixin class _$TodoStateCopyWith<$Res> implements $TodoStateCopyWith<$Re
   factory _$TodoStateCopyWith(_TodoState value, $Res Function(_TodoState) _then) = __$TodoStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<TodoModel> todos, List<Coin> coins
+ List<TodoModel> todos, List<KpCoin> coins
 });
 
 
@@ -147,7 +147,7 @@ class __$TodoStateCopyWithImpl<$Res>
   return _then(_TodoState(
 todos: null == todos ? _self._todos : todos // ignore: cast_nullable_to_non_nullable
 as List<TodoModel>,coins: null == coins ? _self._coins : coins // ignore: cast_nullable_to_non_nullable
-as List<Coin>,
+as List<KpCoin>,
   ));
 }
 

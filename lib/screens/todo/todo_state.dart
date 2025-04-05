@@ -3,8 +3,8 @@ import 'package:poc/screens/todo/todo_model.dart';
 
 part 'todo_state.freezed.dart';
 
-class Coin {
-  Coin({required this.symbol, required this.price});
+class KpCoin {
+  KpCoin({required this.symbol, required this.price});
 
   final String symbol;
   final double price;
@@ -14,7 +14,7 @@ class Coin {
 abstract class TodoState with _$TodoState {
   factory TodoState({
     required List<TodoModel> todos,
-    required List<Coin> coins,
+    required List<KpCoin> coins,
   }) = _TodoState;
 
   TodoState._();

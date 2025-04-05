@@ -112,6 +112,11 @@ class HomeScreen extends ConsumerWidget {
               onPressed: () => context.push('/second'),
               child: const Text('Go to Todo Screen'),
             ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => context.push('/topgain'),
+              child: const Text('Go to Topgain Screen'),
+            ),
           ],
         ),
       ),

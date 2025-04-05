@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poc/screens/todo/todo_state.dart';
+import 'package:poc/screens/top_gain/coin.dart';
 import 'package:poc/service/ws_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -7,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 part 'ws_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-SmartWebSocketService smartWs(Ref ref) {
+SmartWebSocketService coinWs(Ref ref) {
   final service = SmartWebSocketService(
     'wss://stream.binance.com:9443/ws/btcusdt@trade',
   );
@@ -20,9 +21,23 @@ SmartWebSocketService smartWs(Ref ref) {
   return service;
 }
 
+@Riverpod(keepAlive: true)
+SmartWebSocketService binanceMarketWs(Ref ref) {
+  final service = SmartWebSocketService(
+    'wss://stream.binance.com:9443/ws/!ticker@arr',
+  );
+
+  service.connect();
+  ref.onCancel(service.pause);
+  ref.onResume(service.resume);
+  ref.onDispose(service.dispose);
+
+  return service;
+}
+
 @riverpod
-Raw<Stream<List<Coin>>> wsEvent(Ref ref, String eventType) {
-  final ws = ref.watch(smartWsProvider);
+Raw<Stream<List<KpCoin>>> wsEvent(Ref ref, String eventType) {
+  final ws = ref.watch(coinWsProvider);
   return ws.stream
       .bufferTime(const Duration(seconds: 3))
       .map(
@@ -30,16 +45,41 @@ Raw<Stream<List<Coin>>> wsEvent(Ref ref, String eventType) {
             event
                 .where((element) => element['e'] == eventType)
                 .map(
-                  (e) => Coin(
+                  (e) => KpCoin(
                     price: double.parse(e['p'] as String),
                     symbol: e['s'] as String,
                   ),
                 )
                 .toList(),
       )
-      .doOnData((event) => print(event.length))
       .doOnError((p0, p1) {
         print(p0);
         print(p1);
+      });
+}
+
+@riverpod
+Stream<Map<String, BinanceCoin>> binanceCoinMap(Ref ref) {
+  final channel = ref.watch(binanceMarketWsProvider);
+
+  return channel.stream
+      .bufferTime(const Duration(seconds: 3)) // ~60fps
+      .where((buffer) => buffer.isNotEmpty)
+      .map((bufferedEvents) {
+        try {
+          return <String, BinanceCoin>{
+            for (final item in bufferedEvents)
+              if (item['e'] == '24hrTicker')
+                item['s'].toString(): BinanceCoin.fromJson(item),
+          };
+        } catch (e, stack) {
+          print('❌ JSON decode failed: $e');
+          print(stack);
+          return <String, BinanceCoin>{};
+        }
+      })
+      .doOnError((err, stack) {
+        print('❌ Stream error: $err');
+        print(stack);
       });
 }
