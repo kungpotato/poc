@@ -16,7 +16,7 @@ class TopGainersPage extends ConsumerWidget {
         itemCount: order.length,
         itemBuilder: (context, index) {
           final coinId = order[index];
-          return CoinTile(coinId: coinId);
+          return RepaintBoundary(child: CoinTile(coinId: coinId));
         },
       ),
     );
