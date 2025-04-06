@@ -41,6 +41,7 @@ class SmartWebSocketService {
     _retryCount = 0;
     if (_channel != null || _isDisposed) return;
 
+    print('[WebSocket] Connecting to $url...');
     _statusSubject.add(WebSocketStatus.connecting);
 
     _channel = WebSocketChannel.connect(Uri.parse(url));
@@ -51,12 +52,10 @@ class SmartWebSocketService {
       onDone: _onDone,
       cancelOnError: true,
     );
-
     _statusSubject.add(WebSocketStatus.connected);
   }
 
   void _onMessage(dynamic data) {
-    // print(data);
     if (_isPaused) return;
     try {
       final json = jsonDecode(data as String);
@@ -70,39 +69,26 @@ class SmartWebSocketService {
         }
       }
     } catch (err) {
-      print(err);
+      print('[WebSocket] Error decoding message: $err');
     }
-  }
-
-  void send(Map<String, dynamic> data) {
-    if (_channel != null) {
-      _channel!.sink.add(jsonEncode(data));
-    }
-  }
-
-  void pause() {
-    _isPaused = true;
-    _statusSubject.add(WebSocketStatus.paused);
-  }
-
-  void resume() {
-    _isPaused = false;
-    _statusSubject.add(WebSocketStatus.connected);
-  }
-
-  void _onDone() {
-    _statusSubject.add(WebSocketStatus.disconnected);
-    _retry();
   }
 
   void _onError(dynamic e) {
+    print('[WebSocket] Error occurred: $e');
     _statusSubject.add(WebSocketStatus.error);
+    _retry();
+  }
+
+  void _onDone() {
+    print('[WebSocket] Connection closed $url.');
+    _statusSubject.add(WebSocketStatus.disconnected);
     _retry();
   }
 
   Future<void> _retry() async {
     if (_isDisposed || _retryCount >= _maxRetries) {
       if (_retryCount >= _maxRetries) {
+        print('[WebSocket] Max retries reached. Giving up.');
         _statusSubject.add(WebSocketStatus.error);
       }
       return;
@@ -110,8 +96,11 @@ class SmartWebSocketService {
 
     _retryCount++;
     _statusSubject.add(WebSocketStatus.reconnecting);
-
     final delay = _initialRetryDelay * _retryCount;
+    print(
+      '[WebSocket] Retrying in ${delay.inSeconds}s... (Attempt $_retryCount)',
+    );
+
     await Future.delayed(delay);
 
     if (!_isDisposed) {
@@ -120,7 +109,20 @@ class SmartWebSocketService {
     }
   }
 
+  void pause() {
+    _isPaused = true;
+    print('[WebSocket] Paused receiving $url');
+    _statusSubject.add(WebSocketStatus.paused);
+  }
+
+  void resume() {
+    _isPaused = false;
+    print('[WebSocket] Resumed receiving $url');
+    _statusSubject.add(WebSocketStatus.connected);
+  }
+
   void dispose() {
+    print('[WebSocket] Disposing $url');
     _isDisposed = true;
     _channel?.sink.close();
     _eventSubject.close();

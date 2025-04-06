@@ -22,7 +22,7 @@ SmartWebSocketService coinWs(Ref ref) {
   return service;
 }
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: false)
 SmartWebSocketService binanceMarketWs(Ref ref) {
   final service = SmartWebSocketService(
     'wss://stream.binance.com:9443/ws/!ticker@arr',

@@ -22,24 +22,25 @@ final coinWsProvider = Provider<SmartWebSocketService>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CoinWsRef = ProviderRef<SmartWebSocketService>;
-String _$binanceMarketWsHash() => r'ed4a2ef5f19ffb46c3de0ad493566d3dff7e5c95';
+String _$binanceMarketWsHash() => r'de1f010be6a4a495231e969bbdf4a11c0661b5fa';
 
 /// See also [binanceMarketWs].
 @ProviderFor(binanceMarketWs)
-final binanceMarketWsProvider = Provider<SmartWebSocketService>.internal(
-  binanceMarketWs,
-  name: r'binanceMarketWsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$binanceMarketWsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final binanceMarketWsProvider =
+    AutoDisposeProvider<SmartWebSocketService>.internal(
+      binanceMarketWs,
+      name: r'binanceMarketWsProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$binanceMarketWsHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef BinanceMarketWsRef = ProviderRef<SmartWebSocketService>;
+typedef BinanceMarketWsRef = AutoDisposeProviderRef<SmartWebSocketService>;
 String _$binanceDepthWsHash() => r'88e09299137b09a96ab5d181975d3ef63a21f7f9';
 
 /// Copied from Dart SDK
@@ -321,7 +322,7 @@ final binanceCoinMapProvider =
 // ignore: unused_element
 typedef BinanceCoinMapRef =
     AutoDisposeStreamProviderRef<Map<String, BinanceCoin>>;
-String _$orderBookHash() => r'631ba77c72729c1ced8e14577e5d5fb22523fac4';
+String _$orderBookHash() => r'6c0bb2bf91b8637aef9a3bb6ba1c9df9ef95ae6e';
 
 /// See also [orderBook].
 @ProviderFor(orderBook)
