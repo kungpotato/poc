@@ -6,11 +6,11 @@ part of 'ws_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$coinWsHash() => r'4f04abe60b95d4611f4af76a3a2e94d4a19c59c9';
+String _$coinWsHash() => r'fc2139c837852a0113e06fd4d6695324c87aba5b';
 
 /// See also [coinWs].
 @ProviderFor(coinWs)
-final coinWsProvider = Provider<SmartWebSocketService>.internal(
+final coinWsProvider = AutoDisposeProvider<SmartWebSocketService>.internal(
   coinWs,
   name: r'coinWsProvider',
   debugGetCreateSourceHash:
@@ -21,7 +21,7 @@ final coinWsProvider = Provider<SmartWebSocketService>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CoinWsRef = ProviderRef<SmartWebSocketService>;
+typedef CoinWsRef = AutoDisposeProviderRef<SmartWebSocketService>;
 String _$binanceMarketWsHash() => r'de1f010be6a4a495231e969bbdf4a11c0661b5fa';
 
 /// See also [binanceMarketWs].

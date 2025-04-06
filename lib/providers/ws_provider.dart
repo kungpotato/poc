@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 
 part 'ws_provider.g.dart';
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: false)
 SmartWebSocketService coinWs(Ref ref) {
   final service = SmartWebSocketService(
     'wss://stream.binance.com:9443/ws/btcusdt@trade',
