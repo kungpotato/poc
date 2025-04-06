@@ -22,35 +22,46 @@ class _InteractiveOrderBookTriangleViewState
     extends State<InteractiveOrderBookTriangleView> {
   Offset? fingerPosition;
 
+  Widget _buildTooltip(_OrderBookData data, bool isBid) {
+    const rowHeight = 32.0;
+    final index = (fingerPosition!.dy / rowHeight).floor();
+
+    final cumulative =
+        isBid
+            ? data.reversedBids
+                .take(index + 1)
+                .fold<double>(0, (sum, b) => sum + b.quantity)
+            : data.reversedAsks
+                .take(index + 1)
+                .fold<double>(0, (sum, a) => sum + a.quantity);
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Positioned(
+      left: min(fingerPosition!.dx + 8, screenWidth - 120),
+      top: max(0, min(fingerPosition!.dy - 40, screenHeight - 40)),
+      child: Material(
+        elevation: 4,
+        color: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: Colors.black87,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            '${isBid ? 'Bid' : 'Ask'} Sum: ${cumulative.toStringAsFixed(4)}',
+            style: const TextStyle(color: Colors.white, fontSize: 12),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final reversedBids = widget.bids.reversed.toList();
-    final reversedAsks = widget.asks.reversed.toList();
-    final maxLength = max(reversedBids.length, reversedAsks.length);
-
-    final bidVolume = reversedBids.fold<double>(
-      0,
-      (sum, e) => sum + e.quantity,
-    );
-    final askVolume = reversedAsks.fold<double>(
-      0,
-      (sum, e) => sum + e.quantity,
-    );
-
-    final bidCumulative = <double>[];
-    double sumBid = 0;
-    for (final b in reversedBids) {
-      sumBid += b.quantity;
-      bidCumulative.add(sumBid / bidVolume);
-    }
-
-    final askCumulative = <double>[];
-    double sumAsk = 0;
-    for (final a in reversedAsks) {
-      sumAsk += a.quantity;
-      askCumulative.add(sumAsk / askVolume);
-    }
-
+    final data = _OrderBookData.from(widget.bids, widget.asks);
     final isBid =
         (fingerPosition?.dx ?? 0) < MediaQuery.of(context).size.width / 2;
 
@@ -63,176 +74,134 @@ class _InteractiveOrderBookTriangleViewState
       child: Stack(
         children: [
           ListView.builder(
-            itemCount: maxLength,
+            itemCount: data.maxLength,
             itemBuilder: (context, index) {
               final bid =
-                  index < reversedBids.length ? reversedBids[index] : null;
+                  index < data.reversedBids.length
+                      ? data.reversedBids[index]
+                      : null;
               final ask =
-                  index < reversedAsks.length ? reversedAsks[index] : null;
+                  index < data.reversedAsks.length
+                      ? data.reversedAsks[index]
+                      : null;
               final bidBar =
-                  index < bidCumulative.length
-                      ? bidCumulative[index].clamp(0.0, 1.0)
+                  index < data.bidCumulative.length
+                      ? data.bidCumulative[index]
                       : 0.0;
               final askBar =
-                  index < askCumulative.length
-                      ? askCumulative[index].clamp(0.0, 1.0)
+                  index < data.askCumulative.length
+                      ? data.askCumulative[index]
                       : 0.0;
 
-              return SizedBox(
-                height: 32,
-                child: Stack(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: FractionallySizedBox(
-                              widthFactor: bidBar,
-                              alignment: Alignment.centerRight,
-                              child: Container(
-                                color: Colors.green.withValues(alpha: 0.2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FractionallySizedBox(
-                              widthFactor: askBar,
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                color: Colors.red.withValues(alpha: 0.2),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  bid?.quantity.toStringAsFixed(4) ?? '',
-                                  style: const TextStyle(color: Colors.black87),
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  bid?.price.toStringAsFixed(2) ?? '',
-                                  style: const TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  ask?.price.toStringAsFixed(2) ?? '',
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  ask?.quantity.toStringAsFixed(4) ?? '',
-                                  style: const TextStyle(color: Colors.black87),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              return OrderBookRow(
+                bid: bid,
+                ask: ask,
+                bidBar: bidBar,
+                askBar: askBar,
               );
             },
           ),
-
           if (fingerPosition != null) ...[
             CustomPaint(
               size: Size.infinite,
               painter: TooltipLinePainter(
                 position: fingerPosition!,
                 isBidSide: isBid,
-                maxRow: maxLength,
+                maxRow: data.maxLength,
               ),
             ),
-            Positioned(
-              left: () {
-                final screenWidth = MediaQuery.of(context).size.width;
-                const tooltipWidth = 120.0;
-                return min(fingerPosition!.dx + 8, screenWidth - tooltipWidth);
-              }(),
-              top: () {
-                final screenHeight = MediaQuery.of(context).size.height;
-                const tooltipHeight = 40.0;
-                return max(
-                  0,
-                  min(fingerPosition!.dy - 40, screenHeight - tooltipHeight),
-                ).toDouble();
-              }(),
-              child: Material(
-                elevation: 4,
-                color: Colors.transparent,
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Builder(
-                    builder: (_) {
-                      const rowHeight = 32.0;
-                      final index = (fingerPosition!.dy / rowHeight).floor();
-                      final isBid =
-                          fingerPosition!.dx <
-                          MediaQuery.of(context).size.width / 2;
+            _buildTooltip(data, isBid),
+          ],
+        ],
+      ),
+    );
+  }
+}
 
-                      final cumulative =
-                          isBid
-                              ? reversedBids
-                                  .take(index + 1)
-                                  .fold<double>(0, (sum, b) => sum + b.quantity)
-                              : reversedAsks
-                                  .take(index + 1)
-                                  .fold<double>(
-                                    0,
-                                    (sum, a) => sum + a.quantity,
-                                  );
+class OrderBookRow extends StatelessWidget {
+  const OrderBookRow({
+    required this.bid,
+    required this.ask,
+    required this.bidBar,
+    required this.askBar,
+    super.key,
+  });
 
-                      return Text(
-                        '${isBid ? 'Bid' : 'Ask'} Sum: ${cumulative.toStringAsFixed(4)}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                      );
-                    },
+  final OrderBook? bid;
+  final OrderBook? ask;
+  final double bidBar;
+  final double askBar;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 32,
+      child: Stack(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: FractionallySizedBox(
+                    widthFactor: bidBar,
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      color: Colors.green.withValues(alpha: 0.2),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                flex: 3,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: askBar,
+                    alignment: Alignment.centerLeft,
+                    child: Container(color: Colors.red.withValues(alpha: 0.2)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(bid?.quantity.toStringAsFixed(4) ?? ''),
+                      Text(
+                        bid?.price.toStringAsFixed(2) ?? '',
+                        style: const TextStyle(color: Colors.green),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        ask?.price.toStringAsFixed(2) ?? '',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      Text(ask?.quantity.toStringAsFixed(4) ?? ''),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -301,4 +270,57 @@ class TooltipLinePainter extends CustomPainter {
     return oldDelegate.position != position ||
         oldDelegate.isBidSide != isBidSide;
   }
+}
+
+class _OrderBookData {
+  _OrderBookData({
+    required this.reversedBids,
+    required this.reversedAsks,
+    required this.bidCumulative,
+    required this.askCumulative,
+    required this.maxLength,
+  });
+
+  factory _OrderBookData.from(List<OrderBook> bids, List<OrderBook> asks) {
+    final reversedBids = bids.reversed.toList();
+    final reversedAsks = asks.reversed.toList();
+    final maxLength = max(reversedBids.length, reversedAsks.length);
+
+    final bidVolume = reversedBids.fold<double>(
+      0,
+      (sum, e) => sum + e.quantity,
+    );
+    final askVolume = reversedAsks.fold<double>(
+      0,
+      (sum, e) => sum + e.quantity,
+    );
+
+    final bidCumulative = <double>[];
+    double sumBid = 0;
+    for (final b in reversedBids) {
+      sumBid += b.quantity;
+      bidCumulative.add(sumBid / bidVolume);
+    }
+
+    final askCumulative = <double>[];
+    double sumAsk = 0;
+    for (final a in reversedAsks) {
+      sumAsk += a.quantity;
+      askCumulative.add(sumAsk / askVolume);
+    }
+
+    return _OrderBookData(
+      reversedBids: reversedBids,
+      reversedAsks: reversedAsks,
+      bidCumulative: bidCumulative,
+      askCumulative: askCumulative,
+      maxLength: maxLength,
+    );
+  }
+
+  final List<OrderBook> reversedBids;
+  final List<OrderBook> reversedAsks;
+  final List<double> bidCumulative;
+  final List<double> askCumulative;
+  final int maxLength;
 }
