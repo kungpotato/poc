@@ -246,19 +246,19 @@ class OrderBookRow extends StatelessWidget {
 }
 
 class TooltipLinePainter extends CustomPainter {
-  // true = Bid, false = Ask
-
   TooltipLinePainter({
     required this.position,
     required this.maxRow,
     required this.isBidSide,
     this.rowHeight = 32.0,
+    this.fromBottom = false,
   });
 
   final Offset position;
   final double rowHeight;
   final int maxRow;
   final bool isBidSide;
+  final bool fromBottom;
 
   @override
   void paint(Canvas canvas, Size size) {
