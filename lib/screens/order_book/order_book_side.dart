@@ -38,22 +38,37 @@ class _InteractiveOrderBookTriangleViewState
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    final left = min(fingerPosition!.dx + 8, screenWidth - 140);
+    final top = max<double>(0, min(fingerPosition!.dy - 60, screenHeight - 60));
+
     return Positioned(
-      left: min(fingerPosition!.dx + 8, screenWidth - 120),
-      top: max(0, min(fingerPosition!.dy - 40, screenHeight - 40)),
+      left: left,
+      top: top,
       child: Material(
-        elevation: 4,
         color: Colors.transparent,
-        child: Container(
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            color: Colors.black87,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Text(
-            '${isBid ? 'Bid' : 'Ask'} Sum: ${cumulative.toStringAsFixed(4)}',
-            style: const TextStyle(color: Colors.white, fontSize: 12),
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // กล่อง tooltip
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                '${isBid ? 'Bid' : 'Ask'} Sum: ${cumulative.toStringAsFixed(4)}',
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            ),
+            // หางสามเหลี่ยมตรงกลาง
+            Center(
+              child: CustomPaint(
+                size: const Size(20, 10),
+                painter: TooltipTrianglePainter(color: Colors.black87),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -116,6 +131,28 @@ class _InteractiveOrderBookTriangleViewState
       ),
     );
   }
+}
+
+class TooltipTrianglePainter extends CustomPainter {
+  TooltipTrianglePainter({required this.color});
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = color;
+    final path =
+        Path()
+          ..moveTo(0, 0)
+          ..lineTo(size.width / 2, size.height)
+          ..lineTo(size.width, 0)
+          ..close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(TooltipTrianglePainter oldDelegate) => false;
 }
 
 class OrderBookRow extends StatelessWidget {
