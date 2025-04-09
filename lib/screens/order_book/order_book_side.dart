@@ -251,53 +251,68 @@ class TooltipLinePainter extends CustomPainter {
     required this.maxRow,
     required this.isBidSide,
     this.rowHeight = 32.0,
-    this.fromBottom = false,
   });
 
   final Offset position;
   final double rowHeight;
   final int maxRow;
   final bool isBidSide;
-  final bool fromBottom;
 
   @override
   void paint(Canvas canvas, Size size) {
     final index = (position.dy / rowHeight).floor().clamp(0, maxRow - 1);
-    final overlayHeight = (index + 1) * rowHeight;
 
-    final rect = Rect.fromLTWH(
-      isBidSide ? 0 : size.width / 2,
-      0,
-      size.width / 2,
-      overlayHeight,
-    );
+    // Determine rectangle position
+    final double rectTop = index * rowHeight;
+    final double overlayHeight = size.height - rectTop;
 
-    final overlayPaint = Paint()..color = Colors.black.withValues(alpha: 0.1);
+    final Rect rect =
+        isBidSide
+            ? Rect.fromLTWH(
+              0,
+              0,
+              size.width / 2,
+              rectTop + rowHeight,
+            ) // top to hovered row
+            : Rect.fromLTWH(
+              size.width / 2,
+              rectTop,
+              size.width / 2,
+              overlayHeight, // hovered row to bottom
+            );
+
+    final overlayPaint = Paint()..color = Colors.black.withOpacity(0.1);
 
     canvas.drawRect(rect, overlayPaint);
 
-    final dashedY = index * rowHeight;
+    // Draw dashed line at hovered row
+    final double dashedY = rectTop;
+
     final dashPaint =
         Paint()
-          ..color = Colors.white.withValues(alpha: 0.3)
-          ..strokeWidth = 1;
+          ..color = Colors.grey.withOpacity(0.3)
+          ..strokeWidth = 2;
+
     const dashWidth = 4.0;
-    const dashSpace = 4.0;
+    const dashSpace = 1.0;
 
     double startX = isBidSide ? 0 : size.width / 2;
-    final endX = isBidSide ? size.width / 2 : size.width;
+    final double endX = isBidSide ? size.width / 2 : size.width;
 
     while (startX < endX) {
-      canvas.drawLine(
-        Offset(startX, dashedY),
-        Offset(startX + dashWidth, dashedY),
-        dashPaint,
-      );
-      canvas.drawLine(
-        Offset(startX, dashedY + rowHeight),
-        Offset(startX + dashWidth, dashedY + rowHeight),
-        dashPaint,
-      );
+      if (!isBidSide) {
+        canvas.drawLine(
+          Offset(startX, dashedY),
+          Offset(startX + dashWidth, dashedY),
+          dashPaint,
+        );
+      } else {
+        canvas.drawLine(
+          Offset(startX, dashedY + rowHeight),
+          Offset(startX + dashWidth, dashedY + rowHeight),
+          dashPaint,
+        );
+      }
       startX += dashWidth + dashSpace;
     }
   }
